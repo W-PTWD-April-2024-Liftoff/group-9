@@ -11,36 +11,34 @@ import java.util.List;
 @Entity
 public class Park extends AbstractEntity {
 
-    private String location;
+    @NotBlank
+    private String parkId;
 
-    @OneToMany(mappedBy = "park")
-    private List<Amenity> amenities = new ArrayList<>();
+    @NotBlank
+    private String state;
 
-    @OneToMany(mappedBy = "park")
-    private List<ContactInfo> contacts = new ArrayList<>();
+    @Column
+    private String description;
 
-    @OneToMany(mappedBy = "park")
-    private List<OperatingHours> operatingHours = new ArrayList<>();
 
-    @OneToMany(mappedBy = "park")
-    private List<EntranceFee> entranceFees = new ArrayList<>();
+
 
 
     public Park() {}
 
+    public Park(String parkId, String state, String description) {
+        this.parkId = parkId;
+        this.state = state;
+        this.description = description;
+    }
 
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
+    public String getParkId() { return parkId; }
+    public void setParkId(String parkId) { this.parkId = parkId; }
 
-    public List<Amenity> getAmenities() { return amenities; }
-    public void setAmenities(List<Amenity> amenities) { this.amenities = amenities; }
+    public String getState() { return state; }
+    public void setState(String state) { this.state = state; }
 
-    public List<ContactInfo> getContacts() { return contacts; }
-    public void setContacts(List<ContactInfo> contacts) { this.contacts = contacts; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public List<OperatingHours> getOperatingHours() { return operatingHours; }
-    public void setOperatingHours(List<OperatingHours> operatingHours) { this.operatingHours = operatingHours; }
-
-    public List<EntranceFee> getEntranceFees() { return entranceFees; }
-    public void setEntranceFees(List<EntranceFee> entranceFees) { this.entranceFees = entranceFees; }
 }

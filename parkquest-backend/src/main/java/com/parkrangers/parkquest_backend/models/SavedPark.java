@@ -5,17 +5,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Amenity extends AbstractEntity {
+public class SavedPark extends AbstractEntity {
 
-    private String name;  // Example: "Restrooms", "Campgrounds"
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "park_id")
     private Park park;
 
-    public Amenity() {}
+    public SavedPark() {}
 
-    public Amenity(String name, Park park) {
+    public SavedPark(String name, Park park) {
         this.name = name;
         this.park = park;
     }
