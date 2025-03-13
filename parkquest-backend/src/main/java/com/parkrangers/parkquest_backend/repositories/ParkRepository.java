@@ -1,4 +1,4 @@
-package com.parkrangers.parkquest_backend;
+package com.parkrangers.parkquest_backend.repositories;
 
 import com.parkrangers.parkquest_backend.models.Park;
 import org.springframework.data.repository.CrudRepository;

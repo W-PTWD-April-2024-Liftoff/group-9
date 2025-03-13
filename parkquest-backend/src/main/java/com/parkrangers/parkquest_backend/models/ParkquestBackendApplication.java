@@ -1,4 +1,4 @@
-package com.parkrangers.parkquest_backend;
+package com.parkrangers.parkquest_backend.models;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
