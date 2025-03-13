@@ -13,7 +13,6 @@ public class Amenity extends AbstractEntity {
     @JoinColumn(name = "park_id")
     private Park park;
 
-    // Constructors
     public Amenity() {}
 
     public Amenity(String name, Park park) {
@@ -21,7 +20,7 @@ public class Amenity extends AbstractEntity {
         this.park = park;
     }
 
-    // Getters and Setters
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
