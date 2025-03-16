@@ -14,6 +14,7 @@ public class Park extends AbstractEntity {
     private String parkId;
     private String fullName;
     private String states;
+    private String description;
 
     public Park() {}
 
@@ -39,5 +40,13 @@ public class Park extends AbstractEntity {
 
     public void setStates(String states) {
         this.states = states;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
