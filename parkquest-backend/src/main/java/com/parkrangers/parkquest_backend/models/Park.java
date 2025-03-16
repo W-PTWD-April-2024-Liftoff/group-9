@@ -15,6 +15,10 @@ public class Park extends AbstractEntity {
     private String fullName;
     private String states;
     private String description;
+    private String officialWebsite;
+
+    @OneToMany(mappedBy = "park")
+    private List<Amenity> amenities;
 
     public Park() {}
 
@@ -45,8 +49,23 @@ public class Park extends AbstractEntity {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getOfficialWebsite() {
+        return officialWebsite;
+    }
+
+    public void setOfficialWebsite(String officialWebsite) {
+        this.officialWebsite = officialWebsite;
+    }
+
+    public List<Amenity> getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(List<Amenity> amenities) {
+        this.amenities = amenities;
     }
 }
