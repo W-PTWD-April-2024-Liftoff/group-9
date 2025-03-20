@@ -1,4 +1,4 @@
-package com.parkrangers.parkquest_backend.controllers;
+package com.parkrangers.parkquest_backend.controller;
 
 public class GoogleAuthController {
 }
