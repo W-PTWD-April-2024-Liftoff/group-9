@@ -1,6 +1,6 @@
-import React from 'react';
-import { Route, Routes, useLocation, Link } from 'react-router-dom';
-import './App.css'
+import React, {useEffect, useState} from 'react';
+import {Route, Routes, useLocation, Link, useNavigate, NavLink} from 'react-router-dom';
+import './App.module.css'
 import ParksList from './components/ParkList';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -11,49 +11,89 @@ import CampgroundDetail from './components/CampgroundDetail';
 
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(null);
+  const [username, setUsername] = useState(null);
+  const navigate = useNavigate();
 
-  const location = useLocation(); // Get current route
-  const isHomePage = location.pathname === "/"; // Check if on home page
+  useEffect(() => {
+      // const openModal = (type) => {
+      //     setModalType(type);
+      //     setIsModalOpen(true);
+      // };
+      //
+      // const closeModal = () => {
+      //     setIsModalOpen(false);
+      // };
 
-  return (
-    <div className='App'>
-      <header>
-        <h2 id="website-name"><Link to="/" id="website-name">ParkQuest</Link></h2>
-        <div>
-          <button class="account-button"><Link to="/Login">Login</Link></button>
-          <button class="account-button"><Link to="/Signup">Signup</Link></button>
-        </div>
-      </header>
+      const handleSuccessSignup = () => {
+          // closeModal();
+          // setTimeout(() => {
+          //     openModal('login');
+          // }, 500);
+          setIsAuthenticated(true);
+          navigate('/dashboard');
+      };
 
-      <div className={isHomePage ? 'first-page' : ''}>
-        <Routes>
-          <Route path="/" element={
-            <div>
-              <h1>Welcome to ParkQuest!</h1>
-              <br />
-              <h3>Plan your trip to national parks with ease!</h3>
-              <br /><br />
-              <button class="outline-button">
-                <Link to="/parklist">Search Parks/Campgrounds</Link>
-              </button>
-              <button class="outline-button">
-                <Link to="/favorites">My Favorite Parks</Link>
-              </button>
-            </div>
-          }
-          />
-          <Route path="/App" element={<App/>}/>
-          <Route path="/signup" element={<Signup/>}/>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/parklist" element={<ParksList/>}/>
-          <Route path="/parks/:id" element={<ParkDetail/>}/>
-          <Route path="/park/campgrounds/:id" element={<Campgrounds/>}/>
-          <Route path="/campgrounds/:campgroundId" element={<CampgroundDetail/>}/>
-          <Route path="/favorites" element={<FavoritesList/>}/>
-        </Routes>
-      </div>
-    </div>
-  )
-};
+      const handleSuccessLogin = (data) => {
+          // closeModal();
+          setIsAuthenticated(true);
+          // if (data.user && data.user.name) {
+          //     localStorage.setItem('username', data.user.name);
+          //     setUsername(data.user.name);
+          // }
+          navigate('/dashboard');
+      }
+
+      return (
+          <div>
+              <nav>
+
+                      ParkQuest
+
+                  <div>
+                      {<button onClick={() => openModal('login')}>Login</button>}
+                      {<button onClick={() => openModal('signup')}>Signup</button>}
+                  </div>
+              </nav>
+              <div>
+                  <Routes>
+                      <Route path="/" element={
+                          <div>
+                              <div>
+                                  <h1>Welcome to ParkQuest!</h1>
+                                  <br/>
+                                  <h3>Plan your trip to national parks with ease!</h3>
+                              </div>
+                          </div>
+                      }
+                      />
+                      <Route path="/signup"
+                             element={<Signup handleSuccessSignup={handleSuccessSignup} closeModal={closeModal}/>}
+                      />
+                      <Route path="/login"
+                             element={<Login handleSuccessLogin={handleSuccessLogin} closeModal={closeModal}/>}
+                      />
+                      <Route path="/dashboard" element={<Dashboard/>}/>
+                  </Routes>
+              </div>
+
+              <Modal isOpen={isModalOpen}
+                     onRequestClose={closeModal}
+                     ariaHideApp={false}
+                     className={styles.appModal}
+                     overlayClassName={styles.appModalOverlay}
+              >
+                  {modalType === 'login' && (<Login handleSuccessLogin={handleSuccessLogin} closeModal={closeModal}/>
+                  )}
+                  {modalType === 'signup' && (
+                      <Signup handleSuccessSignup={handleSuccessSignup} closeModal={closeModal}/>
+                  )}
+              </Modal>
+          </div>
+      );
+  });
+}
 
 export default App;

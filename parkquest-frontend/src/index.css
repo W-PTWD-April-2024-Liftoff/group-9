@@ -1,13 +1,132 @@
 
+/** {*/
+/*  box-sizing: border-box;*/
+/*  margin: 0;*/
+/*  padding: 0;*/
+/*}*/
+
+/*body, html {*/
+/*  margin: 0;*/
+/*  padding: 0;*/
+/*  font-family: "Inter", sans-serif;*/
+/*}*/
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: "Inter", sans-serif;
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1.1em;
+  background-color: #f8f9fa;
+}
+
+
+button {
+  border-radius: 8px;
+  border: 1px solid navajowhite;
+  padding: 0.5em 1.1em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0 , 0.5);
+}
+
+button:hover {
+  background-color: navajowhite;
+  border-color: grey;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 1px auto -webkit-focus-ring-color;
+}
+
+a {
+  font-weight: 500;
+  color: black;
+  text-decoration: inherit;
+}
+a:hover {
+  color:rgb(10, 63, 65);
+}
+
+h1 {
+  font-size: 2.5em;
+  line-height: 1.1;
+}
+
+.modalBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  gap: 10px;
+}
+
+
+.modalButton {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.modalButton:hover {
+  background-color: navajowhite;
+  color: black;
+}
+
+
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px;
+  gap: 10px;
+}
+
+.modalInput {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 14px;
+  border: 1px solid navajowhite;
+}
+
+
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
