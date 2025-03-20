@@ -5,6 +5,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginButton from "./GoogleLoginButton.jsx";
 
 function Login() {
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -16,26 +17,30 @@ function Login() {
         e.preventDefault();
         setError("");
 
-     try{
-            //prevents blanks
-            if (!email || ! password){
-                setError('Please fill in all fields.');
-                return;
-                }
-            //is an actual email
-             if (!isValidEmail(email)) {
-                    setError("Please enter a valid email address");
-                    return;
-                }
-//             const response = await axios.post('//TOTO: Add in Database, {
-//                 email,
-//                 password
-//                 });
-                //Handle successful login
-                console.log('Login successful:', response.data);
-                history('/App');
-
-        } catch (error){
+     try {
+         //prevents blanks
+         if (!email || !password) {
+             setError('Please fill in all fields.');
+             return;
+         }
+         //is an actual email
+         if (!isValidEmail(email)) {
+             setError("Please enter a valid email address");
+             return;
+         }
+         const response = await axios.post('http://localhost:8080/login', {
+             username,
+             email,
+             password
+         }, {
+             headers: {
+                 'Content-Type': 'application/json'
+             }
+         });
+         if (response.status === 200) {
+             history.push('/App');
+         }
+     } catch (error){
                 //handles errors
                 console.error('Login failed:', error.response ? error.response.data : error.message);
                 setError(error.response ? error.response.data : error.message);
@@ -47,6 +52,14 @@ function Login() {
             <script src="https://apis.google.com/js/platform.js" async defer></script>
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
+                <input
+                    id="username"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username"
+                    required
+                />
                 <input
                     id="email"
                     type="email"
