@@ -33,12 +33,6 @@ function App() {
               <br />
               <h3>Plan your trip to national parks with ease!</h3>
               <br /><br />
-              <button class="outline-button">
-                <Link to="/parklist">Search Parks/Campgrounds</Link>
-              </button>
-              <button class="outline-button">
-                <Link to="/favorites">My Favorite Parks</Link>
-              </button>
             </div>
           }
           />
