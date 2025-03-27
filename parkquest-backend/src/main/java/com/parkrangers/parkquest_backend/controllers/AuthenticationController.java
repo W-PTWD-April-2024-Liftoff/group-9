@@ -60,7 +60,6 @@ public class AuthenticationController {
             return new ResponseEntity<>("Email already used!", HttpStatus.BAD_REQUEST);
             }
         User user = new User();
-        user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
