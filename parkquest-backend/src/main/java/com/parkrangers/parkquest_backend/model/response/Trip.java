@@ -1,6 +1,6 @@
 package com.parkrangers.parkquest_backend.model.response;
 
-import com.parkrangers.parkquest_backend.model.User;
+import com.parkrangers.parkquest_backend.model.entity.User;
 import jakarta.persistence.*;
 
 @Entity
