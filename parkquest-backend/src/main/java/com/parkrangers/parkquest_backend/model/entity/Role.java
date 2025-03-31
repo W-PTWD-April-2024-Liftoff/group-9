@@ -1,4 +1,4 @@
-package com.parkrangers.parkquest_backend.model;
+package com.parkrangers.parkquest_backend.model.entity;
 
 import jakarta.persistence.*;
 
