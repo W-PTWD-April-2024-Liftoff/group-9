@@ -1,6 +1,39 @@
 .parksList {
   padding: 1.25rem;
   text-align: center;
+  background-color: rgba(238, 245, 238, .75);
+  height: 100vh;
+}
+
+.parksList section {
+  margin: 20px 0;
+}
+
+.parksList label {
+  padding-right: 5px;
+}
+
+.searchInput {
+  font-size: .875rem;
+  padding: .625rem 1.125rem;
+  border-radius: .313rem;
+  border: 1px solid #d3d3d3;
+  color: #646363;
+}
+
+.searchBtn {
+  background-color: #004d40;
+  font-size: .875rem;
+  padding: .7rem 1.125rem;
+  border-radius: .313rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.searchBtn:hover {
+  background-color: #017e69;
 }
 
 .parksList ul {
@@ -14,7 +47,7 @@
   background: #f4f4f4;
   padding: .938rem;
   border-radius: .5rem;
-  box-shadow: .125rem .125rem .313rem rgba(0, 0, 0, 0.1);
+  box-shadow: .125rem .125rem .313rem rgba(0, 0, 0, 0.15);
   text-align:justify;
 }
 

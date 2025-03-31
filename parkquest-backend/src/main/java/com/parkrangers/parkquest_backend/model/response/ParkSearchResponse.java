@@ -1,4 +1,4 @@
-package com.parkrangers.parkquest_backend.models.response;
+package com.parkrangers.parkquest_backend.model.response;
 
 import java.util.List;
 

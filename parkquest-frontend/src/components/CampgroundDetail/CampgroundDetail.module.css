@@ -1,10 +1,10 @@
-.parkDetails {
+.campground {
   padding: 1.25rem 2.188rem;
   text-align: center;
   background-color: rgba(238, 245, 238, .75);
 }
 
-.parkBtn {
+.campgroundBtn {
   margin: 0 5px 30px 5px;
   background-color: #004d40;
   font-size: .875rem;
@@ -16,21 +16,13 @@
   color: white;
 }
 
-.parkBtn:hover{
+.campgroundBtn:hover {
   background-color: #017e69;
 }
 
-.linkBtn {
-  color: white;
-}
-
-.parkDetails img {
+.campground img {
   width: 30rem;
   padding-top: 1.25rem;
-}
-
-figcaption {
-  font-style: italic;
 }
 
 .description {
@@ -39,32 +31,30 @@ figcaption {
   line-height: 150%;
 }
 
-.hours {
-  text-align: left;
-  padding-top: 1.25rem;
-}
-
-.activities {
-  text-align: left;
-  margin-top: 20px;
-}
-
-.parkUrl {
-  text-align: left;
-  margin-top: 20px;
-  color: #004d40;
-}
-
-.parkUrl a {
+.url {
   color: #004d40;
   font-weight: bold;
 }
 
-.parkUrl a:hover {
+.url:hover {
   color: #149f88;
 }
 
-.hours ul {
-  list-style: none;
+.extra {
+  text-align: left;
 }
 
+.extra h3 {
+  padding-top: 30px;
+}
+
+.amenitiesList {
+  list-style: none;
+  line-height: 150%;
+  padding-bottom: 30px;
+}
+
+.reservation {
+  text-align: justify;
+  line-height: 150%;
+}

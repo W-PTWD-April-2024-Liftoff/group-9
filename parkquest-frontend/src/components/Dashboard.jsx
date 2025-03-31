@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {Route, Routes, useLocation, Link, useNavigate} from 'react-router-dom';
 import '../App.css'
 import App from '../App';
-import ParksList from './ParkList/ParkList';
+import ParksList from './ParkList/ParksList';
 import ParkDetail from './ParkDetail/ParkDetail';
 import FavoritesList from './FavoritesList/FavoritesList';
-import Campgrounds from './Campgrounds';
-import CampgroundDetail from './CampgroundDetail';
+import Campgrounds from './CampgroundsList/CampgroundsList';
+import CampgroundDetail from './CampgroundDetail/CampgroundDetail';
 
 
 function Dashboard() {

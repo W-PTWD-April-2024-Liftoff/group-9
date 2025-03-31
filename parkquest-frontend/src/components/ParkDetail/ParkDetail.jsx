@@ -27,13 +27,14 @@ export default function ParkDetail() {
 
   return (
     <div className={style.parkDetails}>
-      <button onClick={saveToFavorites}>Save to My List</button>
+
+      <button className={style.parkBtn} onClick={saveToFavorites}>Save to My List</button>
       
-      <button>
-        <Link to="/favorites">My Favorite Parks</Link>
+      <button className={style.parkBtn}>
+        <Link to="/favorites" className={style.linkBtn}>My Favorite Parks</Link>
       </button>
 
-      <button onClick={goBack}>Back</button>
+      <button className={style.parkBtn} onClick={goBack}>Back to Search</button>
 
       <h1>{park.fullName}</h1>
 
@@ -51,23 +52,30 @@ export default function ParkDetail() {
           {park.images[0].title && <figcaption>{park.images[0].title}</figcaption>} 
         </figure>
       )}
-      <p>{park.description}</p>
-      <p><strong>Location:</strong> {park.states}</p>
+      <p className={style.description}>{park.description}</p>
+
+      {/* <p><strong>Location:</strong> {park.states}</p> */}
       
-      <p><strong>Activities:</strong> 
+      <p className={style.activities}><strong>Activities:</strong> 
         {park.activities && park.activities.length > 0 ? 
         park.activities.map(a => a.name).join(", ") : 
           "No activities available"}
       </p>
 
-      <p>
+      <p className={style.parkUrl}>
         <a href={park.url} target="_blank" rel="noopener noreferrer">
           Visit Official Website
         </a>
       </p>
 
-      <button>
-        <Link to={`/park/campgrounds/${park.parkCode}`}>Find Campgrounds</Link>
+      <button className={style.parkBtn}>
+        <Link 
+          to={`/park/campgrounds/${park.parkCode}`} 
+          className={style.linkBtn}
+          state={{ parkName: park.fullName }}
+        >
+          Find Campgrounds
+        </Link>
       </button>
       
       {park.operatingHours?.length > 0 && (

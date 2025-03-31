@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route, Routes, useLocation, Link } from 'react-router-dom';
 import './App.css'
-import ParksList from './components/ParkList/ParkList';
+import ParksList from './components/ParkList/ParksList';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import ParkDetail from './components/ParkDetail/ParkDetail';
 import FavoritesList from './components/FavoritesList/FavoritesList';
-import Campgrounds from './components/Campgrounds';
-import CampgroundDetail from './components/CampgroundDetail';
+import CampgroundDetail from './components/CampgroundDetail/CampgroundDetail';
+import CampgroundsList from './components/CampgroundsList/CampgroundsList';
 
 
 function App() {
@@ -21,8 +21,8 @@ function App() {
       <header>
         <h2 id="website-name"><Link to="/" id="website-name">ParkQuest</Link></h2>
         <div>
-          <button class="account-button"><Link to="/Login">Login</Link></button>
-          <button class="account-button"><Link to="/Signup">Signup</Link></button>
+          <button className="account-button"><Link to="/Login">Login</Link></button>
+          <button className="account-button"><Link to="/Signup">Signup</Link></button>
         </div>
       </header>
 
@@ -48,7 +48,7 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           <Route path="/parklist" element={<ParksList/>}/>
           <Route path="/parklist/:id" element={<ParkDetail/>}/>
-          <Route path="/park/campgrounds/:id" element={<Campgrounds/>}/>
+          <Route path="/park/campgrounds/:id" element={<CampgroundsList/>}/>
           <Route path="/campgrounds/:campgroundId" element={<CampgroundDetail/>}/>
           <Route path="/favorites" element={<FavoritesList/>}/>
         </Routes>

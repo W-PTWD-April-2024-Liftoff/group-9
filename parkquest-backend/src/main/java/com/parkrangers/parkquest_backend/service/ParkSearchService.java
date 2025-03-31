@@ -1,7 +1,7 @@
 package com.parkrangers.parkquest_backend.service;
 
-import com.parkrangers.parkquest_backend.models.response.Park;
-import com.parkrangers.parkquest_backend.models.response.ParkSearchResponse;
+import com.parkrangers.parkquest_backend.model.response.Park;
+import com.parkrangers.parkquest_backend.model.response.ParkSearchResponse;
 import java.util.List;
 
 import org.json.JSONArray;

@@ -77,32 +77,33 @@ const ParksList = () => {
 
   return (
   <div className={style.parksList}>
-    <h2>Find National Parks</h2>
+    <h1>Find National Parks</h1>
 
-    <label>Search by State:</label>
-    <select value={selectedState} onChange={(e) => setSelectedState(e.target.value)}>
+    <section>
+      <label>Search by State:</label>
+      <select value={selectedState} onChange={(e) => setSelectedState(e.target.value)} className={style.searchInput}>
         <option value="">Select a state</option>
         {Object.keys(states).map((state) => (
         <option key={state} value={state}>
             {state}
         </option>
-        ))}page 
-    </select>
-    <button onClick={fetchParksByState}>Search</button>
+        ))}
+      </select>
+      <button onClick={fetchParksByState} className={style.searchBtn}>Search</button>
+    </section>
     
-    <br/>
-    <hr />
-    <br/>
+    <section>
+      <label>Search by Name:</label>
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Enter park name"
+        className={style.searchInput}
+      />
+      <button onClick={fetchParksByName} className={style.searchBtn}>Search</button>
+    </section>
     
-    <label>Search by Park Name:</label>
-    <input
-      type="text"
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-      placeholder="Enter park name"
-    />
-    <button onClick={fetchParksByName}>Search by Name</button>
-
     {error && <p style={{ color: "red" }}>{error}</p>}
 
     <ul>
