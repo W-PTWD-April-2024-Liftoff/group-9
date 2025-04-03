@@ -1,43 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const GoogleLoginButton = () => {
-  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-  const handleLoginSuccess = (response) => {
-    console.log('Login Success: ', response);
+  const handleLoginSuccess = async (response) => {
+    console.log('Google Login Success:', response);
 
-    // Send the Google login token to the backend for verification
-    fetch('http://localhost:8080/api/auth/google', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token: response.credential }),
-    })
-      .then((res) => res.json())
-      .then((data) => setUser(data)) // Set user data
-      .catch((err) => console.error('Error during authentication', err));
+    try {
+      // Send the Google token to your backend
+      const res = await axios.post('http://localhost:8081/api/auth/google', {
+        token: response.credential, // Google's JWT token
+      });
+
+      // Handle successful login
+      console.log('Backend response:', res.data);
+      navigate('/Dashboard'); // Redirect after successful login
+    } catch (error) {
+      console.error('Error logging in with Google:', error.response?.data || error.message);
+    }
   };
 
   const handleLoginFailure = (error) => {
-    console.error('Login Failed: ', error);
+    console.error('Google Login Failed:', error);
   };
 
   return (
-    <div>
-      {!user ? (
+      <div>
         <GoogleLogin
-          onSuccess={handleLoginSuccess}
-          onError={handleLoginFailure}
+            onSuccess={handleLoginSuccess}
+            onError={handleLoginFailure}
         />
-      ) : (
-        <div>
-          <h2>Welcome, {user.name}</h2>
-          <p>Email: {user.email}</p>
-        </div>
-      )}
-    </div>
+      </div>
   );
 };
 
