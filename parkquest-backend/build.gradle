@@ -24,21 +24,39 @@ repositories {
 }
 
 dependencies {
+	// Spring Boot Essentials
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.security:spring-security-crypto'
-//	implementation 'mysql:mysql-connector-java:8.0.33'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation 'mysql:mysql-connector-java'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// Security Password Encoding
+	implementation 'org.springframework.security:spring-security-crypto'
+
+	// Google API Client for OAuth
+	implementation 'com.google.http-client:google-http-client-gson:1.41.8'
+	implementation 'com.google.http-client:google-http-client:1.41.8'
+	implementation 'com.google.http-client:google-http-client-apache-v2:1.41.8'
+	implementation 'com.google.api-client:google-api-client:2.5.0'
+
+	// Database
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+
+	// JSON Handling
+	implementation 'org.json:json:20231013'
+
+	// Utility and Development Tools
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// Testing Dependencies
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation 'org.json:json:20210307' // Ensure to use the latest stable version
+
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {

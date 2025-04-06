@@ -12,12 +12,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors().and() // Enable CORS
-                .csrf().disable() // Disable CSRF for simplicity (not recommended for production)
                 .authorizeHttpRequests(authz -> authz
-                        .anyRequest().permitAll()); // Allow all requests for now
+                        .requestMatchers("/api/auth/signup", "/api/auth/login").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // Role restrictions for admin routes
+                        .anyRequest().authenticated()
+                )
+                .csrf().disable()
+                .cors();
         return http.build();
     }
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

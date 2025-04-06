@@ -46,6 +46,29 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/google")
+    public ResponseEntity<?> loginWithGoogle(@RequestBody GoogleLoginRequest googleLoginRequest) {
+        try {
+            // Delegate to UserService to handle Google login
+            User user = userService.loginWithGoogle(googleLoginRequest.getToken());
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(new ApiResponse(false, ex.getMessage()));
+        }
+    }
+
+    static class GoogleLoginRequest {
+        private String token; // Google OAuth token
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+    }
+
     static class LoginRequest {
         private String email;
         private String name; // Optional for existing users
