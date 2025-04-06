@@ -23,17 +23,19 @@ public class FavoriteController {
     @PostMapping
     public ResponseEntity<Favorite> addFavorite(
             @RequestParam Long userId,
-            @RequestParam Long parkId // Updated parameter name to `parkId` for clarity
+            @RequestParam String parkCode,
+            @RequestParam String fullName
     ) {
-        return ResponseEntity.ok(favoriteService.addFavorite(userId, parkId));
+        Favorite favorite = favoriteService.addFavorite(userId, parkCode, fullName);
+        return ResponseEntity.ok(favorite);
     }
 
     @DeleteMapping
     public ResponseEntity<Void> removeFavorite(
             @RequestParam Long userId,
-            @RequestParam Long parkId // Updated parameter name to `parkId` for clarity
+            @RequestParam String parkCode
     ) {
-        favoriteService.deleteFavorite(userId, parkId);
+        favoriteService.deleteFavorite(userId, parkCode);
         return ResponseEntity.ok().build();
     }
 }

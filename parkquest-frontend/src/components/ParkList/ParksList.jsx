@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import style from "./ParkList.module.css";
 import FavoritesList from "../FavoritesList/FavoritesList";
 import FavoriteButton from "../FavoritesList/FavoriteButton.jsx";
+import {useUserContext} from "../UserContext.jsx";
 
 const ParksList = () => {
     const [selectedState, setSelectedState] = useState("");
@@ -10,6 +11,13 @@ const ParksList = () => {
     const [parks, setParks] = useState([]);
     const [error, setError] = useState("");
     const [favorites, setFavorites] = useState(JSON.parse(localStorage.getItem("favorites")) || []);
+    const [hasSearched, setHasSearched] = useState(false);
+    const userId = useUserContext();
+
+    if (!userId) {
+        console.error("User ID is not defined. Ensure you are logged in.");
+        return <p>Error: User ID is missing. Please log in.</p>;
+    }
 
     const states = {
         "Alabama": "AL", "Alaska": "AK", "Arizona": "AZ", "Arkansas": "AR", "California": "CA",
@@ -49,6 +57,7 @@ const ParksList = () => {
 
             const data = await response.json();
             setParks(data);
+            setHasSearched(true); // Mark that a search has been performed
             console.log("API Response:", data);
         } catch (err) {
             setError(err.message);
@@ -75,6 +84,7 @@ const ParksList = () => {
 
             const data = await response.json();
             setParks(data);
+            setHasSearched(true); // Mark that a search has been performed
         } catch (err) {
             setError(err.message);
         }
@@ -126,33 +136,33 @@ const ParksList = () => {
             </section>
 
             {error && <p style={{color: "red"}}>{error}</p>}
-            <ul className={style.parksList}>
-                {parks.length > 0 ? (
-                    parks.map((park) => (
-                        <li key={park.parkId} className={style.parkItem}>
-                            <h2>{park.fullName}</h2>
-                            <p>{park.description}</p>
-                            <FavoriteButton userId={/* User ID */ 1} parkId={park.parkId} /> {/* Pass parkId */}
-                        </li>
-                    ))
-                ) : (
-                    <li>No parks found. Please refine your search.</li>
-                )}
-            </ul>
-            {/*<ul>*/}
-            {/*    {parks.map((park) => (*/}
-            {/*        <li key={park.id}>*/}
-            {/*            <h3>*/}
-            {/*                <Link to={`/parklist/${park.parkCode}`} state={{park}}>*/}
-            {/*                    {park.fullName}*/}
-            {/*                </Link>*/}
-            {/*            </h3>*/}
-            {/*            <p>{park.description}</p>*/}
-            {/*            <FavoriteButton userId={userId} parkId={park.parkId}/>*/}
-
-            {/*        </li>*/}
-            {/*    ))}*/}
+            {/*<ul className={style.parksList}>*/}
+            {/*    {parks.length > 0 ? (*/}
+            {/*        parks.map((park) => (*/}
+            {/*            <li key={park.parkId} className={style.parkItem}>*/}
+            {/*                <h2>{park.fullName}</h2>*/}
+            {/*                <p>{park.description}</p>*/}
+            {/*                <FavoriteButton userId={userId} parkId={park.parkId} />*/}
+            {/*            </li>*/}
+            {/*        ))*/}
+            {/*    ) : hasSearched ? ( // Display the message only if a search was performed*/}
+            {/*        <li>No parks found. Please refine your search.</li>*/}
+            {/*    ) : null}*/}
             {/*</ul>*/}
+            <ul>
+                {parks.map((park) => (
+                    <li key={park.id}>
+                        <h3>
+                            <Link to={`/parklist/${park.parkCode}`} state={{park}}>
+                                {park.fullName}
+                            </Link>
+                        </h3>
+                        <p>{park.description}</p>
+                        <FavoriteButton userId={userId} parkCode={park.parkCode} />
+
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

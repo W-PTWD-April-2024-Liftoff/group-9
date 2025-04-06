@@ -8,7 +8,7 @@ const GoogleLoginButton = () => {
     console.log('Login Success: ', response);
 
     // Send the Google login token to the backend for verification
-    fetch('http://localhost:8080/api/auth/google', {
+    fetch('http://localhost:8081/api/auth/google', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

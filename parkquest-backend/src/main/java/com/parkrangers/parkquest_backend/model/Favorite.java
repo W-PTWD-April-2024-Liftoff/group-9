@@ -1,6 +1,5 @@
 package com.parkrangers.parkquest_backend.model;
 
-import com.parkrangers.parkquest_backend.model.response.Park;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,14 +13,17 @@ public class Favorite {
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name="park_id", nullable = false)
-    private Park park;
+    @Column(name = "park_code", nullable = false)
+    private String parkCode;
 
-    public Favorite(Long id, User user, Park park) {
+    @Column(name = "fullName", nullable = false)
+    private String fullName;
+
+    public Favorite(Long id, User user, String park, String parkCode) {
         this.id = id;
         this.user = user;
-        this.park = park;
+        this.fullName = fullName;
+        this.parkCode = parkCode;
     }
     public Favorite() {}
 
@@ -41,11 +43,21 @@ public class Favorite {
         this.user = user;
     }
 
-    public Park getPark() {
-        return park;
+    public String getParkCode() {
+        return parkCode;
     }
 
-    public void setPark(Park park) {
-        this.park = park;
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setParkCode(String parkCode) {
+        this.parkCode = parkCode;
+
+
     }
 }

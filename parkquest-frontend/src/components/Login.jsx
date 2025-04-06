@@ -3,12 +3,14 @@ import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom';
 import {GoogleOAuthProvider} from '@react-oauth/google';
 import GoogleLoginButton from "./GoogleLoginButton.jsx";
+import {useUserContext} from "./UserContext.jsx";
 
 function Login({ setIsAuthenticated }) { // Accept setIsAuthenticated as a prop
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    const { loginUser } = useUserContext(); // Get loginUser from UserContext
     const navigate = useNavigate();
 
     //email validation helper function
@@ -36,13 +38,17 @@ function Login({ setIsAuthenticated }) { // Accept setIsAuthenticated as a prop
                 password
             });
             // Assuming the backend responds with a token
-            const {token} = response.data;
+            const {token, userId} = response.data;
 
             if (token) {
                 console.log("Token received from backend:", token);
-                localStorage.setItem("authToken", token); // Save the token
-                setIsAuthenticated(true); // Call the setIsAuthenticated function passed via props
-                navigate("/Dashboard"); // Redirect to dashboard
+                localStorage.setItem("authToken", token);
+
+                // Update userId globally using UserContext
+                loginUser(userId);
+
+                setIsAuthenticated(true); // Optional
+                navigate("/Dashboard"); // Redirect to Dashboard
             } else {
                 setError("Token missing in backend response.");
             }
@@ -51,6 +57,7 @@ function Login({ setIsAuthenticated }) { // Accept setIsAuthenticated as a prop
             setError(error.response?.data?.message || "An error occurred while logging in. Please try again.");
         }
     };
+
 
 
     // Save authentication token in localStorage

@@ -12,6 +12,7 @@ import CampgroundsList from './components/CampgroundsList/CampgroundsList';
 import HikingTrails from './components/HikingTrails/HikingTrails';
 import Header from './components/Header';
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import {UserProvider, useUserContext} from "./components/UserContext";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,6 +35,7 @@ function App() {
   };
 
   return (
+      <UserProvider>
     <div className='App'>
         {/* Render Header dynamically */}
         <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
@@ -124,6 +126,7 @@ function App() {
         </Routes>
       </div>
     </div>
+      </UserProvider>
   )
 }
 

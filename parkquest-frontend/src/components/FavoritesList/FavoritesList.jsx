@@ -11,6 +11,7 @@ const FavoritesList = ({ userId }) => {
         const fetchFavorites = async () => {
             try {
                 const response = await axios.get(`http://localhost:8081/api/favorites/${userId}`);
+                console.log("Favorites fetched:", response.data); // Debug
                 setFavorites(response.data);
                 localStorage.setItem("favorites", JSON.stringify(response.data));
             } catch (err) {
@@ -20,19 +21,20 @@ const FavoritesList = ({ userId }) => {
         fetchFavorites();
     }, [userId]);
 
-    const removeFavorite = async (parkId) => {
+    const removeFavorite = async (parkCode) => {
         try {
             await axios.delete("http://localhost:8081/api/favorites", {
-                params: { userId, parkId },
+                params: { userId, parkCode },
             });
 
-            const updatedFavorites = favorites.filter((park) => park.parkId !== parkId);
-            setFavorites(updatedFavorites);
-            localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+            const response = await axios.get(`http://localhost:8081/api/favorites/${userId}`);
+            setFavorites(response.data);
+            localStorage.setItem("favorites", JSON.stringify(response.data));
         } catch (err) {
             console.error("Error removing favorite:", err);
         }
     };
+
 
     return (
         <div className={style.favoriteList}>
@@ -44,10 +46,10 @@ const FavoritesList = ({ userId }) => {
                 <p>No favorites yet!</p>
             ) : (
                 <ul>
-                    {favorites.map((park) => (
-                        <li key={park.parkId}>
-                            <h3>{park.fullName}</h3>
-                            <button onClick={() => removeFavorite(park.parkId)}>Remove</button>
+                    {favorites.map((fav) => (
+                        <li key={fav.parkCode}>
+                            <h3>{fav.parkCode}</h3> {/* Display parkCode or add a lookup */}
+                            <button onClick={() => removeFavorite(fav.parkCode)}>Remove</button>
                         </li>
                     ))}
                 </ul>
@@ -55,5 +57,6 @@ const FavoritesList = ({ userId }) => {
         </div>
     );
 };
+
 
 export default FavoritesList;

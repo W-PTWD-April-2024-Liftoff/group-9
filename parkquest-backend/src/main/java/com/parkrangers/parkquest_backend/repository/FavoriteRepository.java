@@ -10,5 +10,7 @@ import java.util.Optional;
 @Repository
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     List<Favorite> findByUserId(Long userId);
-    Optional<Favorite> findByUserIdAndPark_ParkId(Long userId, Long parkId);
+    Optional<Favorite> findByUserIdAndParkCode(Long userId, String parkCode);
+
+    String parkCode(String parkCode);
 }

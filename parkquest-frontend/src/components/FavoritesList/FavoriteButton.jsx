@@ -1,41 +1,58 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const FavoriteButton = ({ userId, parkId }) => {
+const FavoriteButton = ({ userId, parkCode }) => {
     const [isFavorited, setIsFavorited] = useState(false);
 
-    // Update `isFavorited` on component mount
+    // Check if the current park is favorited on component mount
     useEffect(() => {
-        const existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-        const favoriteExists = existingFavorites.some((fav) => fav.parkId === parkId);
-        setIsFavorited(favoriteExists);
-    }, [parkId]);
+        const checkIfFavorited = async () => {
+            if (!userId) {
+                console.error("Missing userId");
+                return;
+            }
+            try {
+                const response = await axios.get(`http://localhost:8081/api/favorites/${userId}`);
+                const favorites = response.data;
+
+                if (favorites && favorites.some((fav) => fav.parkCode === parkCode)) {
+                    setIsFavorited(true);
+                }
+            } catch (err) {
+                console.error("Error fetching favorites:", err);
+            }
+        };
+
+        checkIfFavorited();
+    }, [userId, parkCode]);
 
     const handleAddToFavorites = async () => {
         try {
-            await axios.post(`http://localhost:8081/api/favorites`, {
-                userId,
-                parkId,
+            await axios.post(`http://localhost:8081/api/favorites`, null, {
+                params: { userId, parkCode }, // Use parkCode
             });
-
-            // Sync with localStorage
-            const updatedFavoritesResponse = await axios.get(
-                `http://localhost:8081/api/favorites/${userId}`
-            );
-            const updatedFavorites = updatedFavoritesResponse.data;
-
-            localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-            setIsFavorited(true); // Update state
+            setIsFavorited(true);
         } catch (err) {
             console.error("Error adding to favorites:", err);
         }
     };
 
+    const handleRemoveFromFavorites = async () => {
+        try {
+            await axios.delete("http://localhost:8081/api/favorites", {
+                params: { userId, parkCode }, // Use parkCode
+            });
+            setIsFavorited(false);
+        } catch (err) {
+            console.error("Error removing from favorites:", err);
+        }
+    };
+
+
     return (
         <button
-            onClick={handleAddToFavorites}
+            onClick={isFavorited ? handleRemoveFromFavorites : handleAddToFavorites}
             className={`favorite-button ${isFavorited ? "favorited" : ""}`}
-            disabled={isFavorited} // Disable button if already favorited
         >
             {isFavorited ? "Favorited" : "Add to Favorites"}
         </button>
