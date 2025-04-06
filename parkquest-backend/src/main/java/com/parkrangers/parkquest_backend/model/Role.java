@@ -7,23 +7,23 @@ import jakarta.persistence.*;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long roleId;
 
     private String name;
 
-    public Role(Long id, String name) {
-        this.id = id;
+    public Role(Long roleId, String name) {
+        this.roleId = roleId;
         this.name = name;
     }
 
     public Role() {}
 
-    public Long getId() {
-        return id;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     public String getName() {

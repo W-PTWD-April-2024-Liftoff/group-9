@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     @Column(name = "googleId", nullable = true, unique = true)
     private String googleId;
@@ -54,11 +54,11 @@ public class User implements UserDetails {
     }
 
     public Long getId() {
-        return id;
+        return userId;
     }
 
     public void setId(Long userId) {
-        this.id = userId;
+        this.userId = userId;
     }
 
     public String getUsername() {
