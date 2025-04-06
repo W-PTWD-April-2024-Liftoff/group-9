@@ -13,11 +13,17 @@ export default function ParkDetail() {
     return <p>No park data available.</p>; // Handle case where data is missing
   }
 
+  // Save the park to the favorites
   const saveToFavorites = () => {
     const existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    if (!existingFavorites.some(fav => fav.id === park.id)) {
+    const isAlreadyFavorite = existingFavorites.some((fav) => fav.id === park.id);
+
+    if (!isAlreadyFavorite) {
       const updatedFavorites = [...existingFavorites, park];
       localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      console.log(`Park "${park.fullName}" added to favorites!`);
+    } else {
+      console.log(`Park "${park.fullName}" is already a favorite!`);
     }
   };
 

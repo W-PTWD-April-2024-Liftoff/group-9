@@ -12,3 +12,30 @@
   border-radius: .5rem;
   box-shadow: .125rem .125rem .313rem rgba(0, 0, 0, 0.1);
 }
+
+.favorite-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 1px solid #007bff;
+  color: #007bff;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.favorite-button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.favorite-button.favorited {
+  color: white;
+  background-color: #28a745;
+  border: 1px solid #28a745;
+  cursor: not-allowed; /* Disable further clicks */
+}
+
+.favorite-button.favorited:hover {
+  background-color: #28a745;
+  color: white;
+}
