@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "googleId", nullable = true, unique = true)
+    @Column(name = "google_id", nullable = true, unique = true)
     private String googleId;
 
     @Column(name = "username", nullable = false, unique = true)
