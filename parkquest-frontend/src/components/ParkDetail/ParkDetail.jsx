@@ -35,9 +35,8 @@ export default function ParkDetail() {
 
   return (
     <div className={style.parkDetails}>
-
       <button className={style.parkBtn} onClick={saveToFavorites}>Save to My List</button>
-      
+
       <button className={style.parkBtn}>
         <Link to="/favorites" className={style.linkBtn}>My Favorite Parks</Link>
       </button>
@@ -47,26 +46,26 @@ export default function ParkDetail() {
       <h1>{park.fullName}</h1>
 
       <div className={style.carouselWrapper}>
-      <button className={style.arrow} onClick={scrollLeft}>◀</button>
-      
-      <div className={style.carousel} ref={carouselRef}>
-        {park.images.map((img, index) => (
-          <figure key={index} className={style.carouselItem}>
-            <img
-              src={img.url} 
-              alt={img.altText || "Park Image"} 
-              title={img.title}
-              onError={(e) => {
-              e.target.closest("figure").style.display = "none";
-              }}
-            />
-            {img.title && <figcaption>{img.title}</figcaption>}
-          </figure>
-        ))}
+        <button className={style.arrow} onClick={scrollLeft}>◀</button>
+
+        <div className={style.carousel} ref={carouselRef}>
+          {park.images.map((img, index) => (
+            <figure key={index} className={style.carouselItem}>
+              <img
+                src={img.url}
+                alt={img.altText || "Park Image"}
+                title={img.title}
+                onError={(e) => {
+                  e.target.closest("figure").style.display = "none";
+                }}
+              />
+              {img.title && <figcaption>{img.title}</figcaption>}
+            </figure>
+          ))}
+        </div>
+
+        <button className={style.arrow} onClick={scrollRight}>▶</button>
       </div>
-      
-      <button className={style.arrow} onClick={scrollRight}>▶</button>
-    </div>
 
       <p className={style.description}>{park.description}</p>
 
@@ -75,23 +74,23 @@ export default function ParkDetail() {
           Visit Official Website
         </a>
       </p>
-      
+
       <h3>Activities:</h3>
-      <p className={style.activities}> 
-        {park.activities && park.activities.length > 0 ? 
-        park.activities.map(a => a.name).join(", ") : 
+      <p className={style.activities}>
+        {park.activities && park.activities.length > 0 ?
+          park.activities.map(a => a.name).join(", ") :
           "No activities available"}
       </p>
 
       <p className={style.parkUrl}>
-        <Link 
-          to={`/park/hiking/${park.parkCode}`} 
+        <Link
+          to={`/park/hiking/${park.parkCode}`}
           state={{ parkName: park.fullName }}
         >
           See hiking trails in {park.fullName}
         </Link>
       </p>
-      
+
       {park.addresses?.length > 0 && (
         <div>
           <h3>Address:</h3>
@@ -103,15 +102,24 @@ export default function ParkDetail() {
       )}
 
       <button className={style.parkBtn}>
-        <Link 
-          to={`/park/campgrounds/${park.parkCode}`} 
+        <Link
+          to={`/park/campgrounds/${park.parkCode}`}
           className={style.linkBtn}
           state={{ parkName: park.fullName }}
         >
           Find Campgrounds
         </Link>
       </button>
-      
+
+      {/* Add Review Button */}
+      <button className={style.parkBtn}>
+        <Link
+          to={`/reviews/${park.id}`} // This link will navigate to the Review page
+          className={style.linkBtn}
+        >
+          View & Write Reviews
+        </Link>
+      </button>
     </div>
   );
 }
