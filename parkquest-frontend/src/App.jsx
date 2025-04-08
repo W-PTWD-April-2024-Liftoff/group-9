@@ -12,6 +12,7 @@ import CampgroundsList from './components/CampgroundsList/CampgroundsList';
 import HikingTrails from './components/HikingTrails/HikingTrails';
 import Header from './components/Header';
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import Review from "./components/Review/Review";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -119,8 +120,18 @@ function App() {
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <HikingTrails />
                 </ProtectedRoute>
-              }
+                              }
           />
+           <Route
+              path="/reviews/:parkId"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <Review />
+                </ProtectedRoute>
+              }
+            />
+
+
         </Routes>
       </div>
     </div>
