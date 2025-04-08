@@ -1,3 +1,107 @@
-/* .reviewContainer {
+/* Review.module.css */
 
-} */
+/* Container for the entire review section */
+.reviewContainer {
+  padding: 1.25rem 2.188rem;
+  text-align: center;
+  background-color: rgba(238, 245, 238, .75);
+}
+
+/* Button styling for review-related actions */
+.reviewBtn {
+  margin: 0 5px 30px 5px;
+  background-color: #004d40;
+  font-size: .875rem;
+  padding: .5rem 1rem;
+  border-radius: .313rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+/* Button hover effect */
+.reviewBtn:hover {
+  background-color: #017e69;
+}
+
+/* Link styling for navigation inside the review section */
+.linkBtn {
+  color: white;
+  font-weight: bold;
+}
+
+/* Textarea for writing a review */
+.reviewTextarea {
+  width: 100%;
+  height: 150px;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: .313rem;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  resize: none;
+}
+
+/* Review item display */
+.reviewList {
+  text-align: left;
+  margin-top: 20px;
+}
+
+/* Styling for individual review items */
+.reviewItem {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: rgba(238, 245, 238, .85);
+  border-radius: .313rem;
+  border: 1px solid #e5e5e5;
+}
+
+.reviewItem p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Title for the review section */
+.reviewSectionTitle {
+  text-align: left;
+  margin-top: 20px;
+  font-size: 1.25rem;
+  color: #004d40;
+}
+
+/* Error message display */
+.errorMessage {
+  color: red;
+  margin-top: 1rem;
+}
+
+/* Spinner or loading indicator */
+.loadingSpinner {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  color: #004d40;
+}
+
+/* Review button for submitting a review */
+.submitReviewBtn {
+  background-color: #004d40;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: .313rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+/* Submit button hover effect */
+.submitReviewBtn:hover {
+  background-color: #017e69;
+}
+
