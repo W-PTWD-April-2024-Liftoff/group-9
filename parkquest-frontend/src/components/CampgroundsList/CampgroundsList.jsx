@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import style from "./CampgroundsList.module.css";
+import CampTripButton from "../Trips/Buttons/CampTripButton.jsx";
 
 const API_KEY = import.meta.env.VITE_PARKS_API_KEY;
 const API_BASE_URL = "https://developer.nps.gov/api/v1/campgrounds";
@@ -51,6 +52,7 @@ export default function CampgroundsList() {
               </Link>
             </h3>
             <p>{campground.description}</p>
+              <CampTripButton parkCode={parkCode} title={campground.name} shortDescription={campground.description} userId={localStorage.getItem("userId")} />
           </li>
         ))}
       </ul>

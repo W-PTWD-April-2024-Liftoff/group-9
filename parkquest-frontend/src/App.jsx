@@ -10,6 +10,8 @@ import FavoritesList from './components/FavoritesList/FavoritesList';
 import CampgroundDetail from './components/CampgroundDetail/CampgroundDetail';
 import CampgroundsList from './components/CampgroundsList/CampgroundsList';
 import HikingTrails from './components/HikingTrails/HikingTrails';
+import Trips from './components/Trips/Trips';
+import TripDetails from './components/Trips/TripDetails';
 import Header from './components/Header';
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import SubscriptionButton from './components/Subscription/SubscriptionButton';
@@ -41,7 +43,6 @@ function App() {
         {/* Render Header dynamically */}
         <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
 
-
         <div className={isHomePage ? 'first-page' : ''}>
 
         <Routes>
@@ -49,14 +50,10 @@ function App() {
             <div>
               <h1>Welcome to ParkQuest!</h1>
               <h2>Plan your trip to national parks with ease!</h2>
-              <div>
-                {/*<button className="outline-button">*/}
-                {/*  <Link to="/Dashboard">Dashboard</Link>*/}
-                {/*</button>*/}
-              </div>
             </div>
           }
           />
+          
           {/*Public Routes*/}
           <Route path="/signup" element={<Signup/>}/>
             <Route
@@ -130,6 +127,22 @@ function App() {
                 </ProtectedRoute>
               }
           />
+            <Route
+                path="/trips"
+                element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                        <Trips userId={localStorage.getItem("userId")} />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/tripdetails/:id"
+                element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                        <TripDetails />
+                    </ProtectedRoute>
+                }
+            />
         </Routes>
       </div>
     </div>

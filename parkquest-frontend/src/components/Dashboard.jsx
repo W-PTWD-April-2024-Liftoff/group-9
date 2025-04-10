@@ -1,51 +1,40 @@
-import React, {useState} from 'react';
-import {Route, Routes, useLocation, Link, useNavigate} from 'react-router-dom';
+import {Route, Routes, Link} from 'react-router-dom';
 import '../App.css'
-import App from '../App';
-import ParksList from './ParkList/ParksList';
-import ParkDetail from './ParkDetail/ParkDetail';
 import FavoritesList from './FavoritesList/FavoritesList';
-import Campgrounds from './CampgroundsList/CampgroundsList';
-import CampgroundDetail from './CampgroundDetail/CampgroundDetail';
-
 
 function Dashboard() {
-    const navigate = useNavigate();
-    const location = useLocation(); // Get current route
-    const [error, setError] = useState(null);
+  const userId = localStorage.getItem("userId");
 
-    const userId = localStorage.getItem("userId");
-
-    return (
-        <div>
-            {/*header from header file in app*/}
+  return (
+    <div className='dashboard'>
+        <Routes>
+          <Route path="/" element={
             <div>
-                <Routes>
-                    <Route path="/" element={
-                        <div>
-                            <h1>Welcome to ParkQuest!</h1>
-                            <br/>
-                            <h3>Plan your trip to national parks with ease!</h3>
-                            <br/><br/>
-                            <div>
-                                <button className="outline-button">
-                                    <Link to="/parklist">Search Parks</Link>
-                                </button>
-                                <button className="outline-button">
-                                    <Link to="/favorites">My Favorite Parks</Link>
-                                </button>
-                            </div>
-                            </div>
-                            }/>
-                    <Route
-                        path="/favorites"
-                        element={<FavoritesList userId={userId} />}
-                    />
+              <h1>Welcome to ParkQuest!</h1>
+                <h2>Plan your trip to national parks with ease!</h2>
+                  <div className='buttons'>
+                    <button className="outline-button dashboard-btn">
+                      <Link to="/parklist">Search Parks</Link>
+                    </button>
+                    
+                    <button className="outline-button dashboard-btn">
+                      <Link to="/favorites">My Favorite Parks</Link>
+                    </button>
 
-                </ Routes>
-                        </div>
-                        </div>
-                        );
-            }
+                    <button className="outline-button dashboard-btn">
+                      <Link to="/trips">My Trips</Link>
+                    </button>
+
+                  </div>
+              </div>
+          }/>
+          <Route
+            path="/favorites"
+            element={<FavoritesList userId={userId} />}
+          />
+        </ Routes>
+    </div>
+  );
+}
 
 export default Dashboard;

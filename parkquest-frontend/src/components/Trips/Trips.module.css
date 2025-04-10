@@ -1,0 +1,109 @@
+/* Applies to the main Trips component container */
+.trips {
+    text-align: center;
+    padding: 1.25rem 2.188rem;
+}
+
+/* Style for buttons similar to outlineButton */
+.outlineButton {
+    background-color: transparent;
+    color: rgba(0, 140, 0, 1);
+    font-size: 0.875rem;
+    padding: 0.625rem 1.125rem;
+    border-radius: 0.313rem;
+    border: 0.125rem solid rgba(0, 140, 0, 1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.outlineButton:hover {
+    background-color: rgba(0, 140, 0, 1);
+    color: white;
+}
+
+.outlineButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.188rem rgba(0, 113, 0, 0.5);
+}
+
+/* Style for each trip entry in the list */
+.tripList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.938rem;
+    padding: 0;
+    margin: 0;
+}
+
+.tripItem {
+    background: #f4f4f4;
+    padding: 0.938rem;
+    border-radius: 0.5rem;
+    box-shadow: 0.125rem 0.125rem 0.313rem rgba(0, 0, 0, 0.15);
+    text-align: left;
+}
+
+/* Park Name (link inside a trip) */
+.tripName {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #015f4f;
+}
+
+.tripName a {
+    color: #015f4f;
+    text-decoration: none;
+}
+
+.tripName a:hover {
+    color: #149f88;
+    text-decoration: underline;
+}
+
+/* Description style for each park */
+.description {
+    color: #333;
+    margin-bottom: 1rem;
+    text-align: justify;
+    line-height: 1.5;
+}
+
+/* Buttons inside each trip item */
+.buttonGroup {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.tripBtn {
+    background-color: #004d40;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.313rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.tripBtn:hover {
+    background-color: #017e69;
+}
+
+.editBtn {
+    background-color: #007e67;
+}
+
+.editBtn:hover {
+    background-color: #02944f;
+}
+
+.deleteBtn {
+    background-color: #8a1919;
+}
+
+.deleteBtn:hover {
+    background-color: #ca1f1f;
+}

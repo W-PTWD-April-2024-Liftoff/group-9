@@ -15,8 +15,8 @@ header {
   padding:  0 2.188rem;
 }
 
-/* First Page */
-.first-page {
+/* First Page, Dashboard */
+.first-page, .dashboard {
   display: flex;
   align-items: center; 
   justify-content: center; 
@@ -29,7 +29,7 @@ header {
   text-align: center;
 }
 
-.first-page h2 {
+.first-page h2, .dashboard h2 {
   margin-top: 20px;
   letter-spacing: 1px;
 }
@@ -54,6 +54,14 @@ header {
 .outline-button:focus {
   outline: none;
   box-shadow: 0 0 0 .188rem rgba(0, 113, 0, 0.5);
+}
+
+/* Dashboard buttons */
+.buttons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 .login-page, .signup-page {
@@ -96,7 +104,7 @@ input {
 }
 
 /* Login Signup Logout Button */
-.account-button {
+.account-button, .dashboard-btn {
   background-color: rgba(238, 245, 238, .75);
   color: rgba(0, 140, 0, 1);
   font-size: .875rem;

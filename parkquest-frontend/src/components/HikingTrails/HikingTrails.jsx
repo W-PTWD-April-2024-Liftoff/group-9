@@ -1,6 +1,7 @@
 import style from "./HikingTrails.module.css";
 import { useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import TrailTripButton from "../Trips/Buttons/TrailTripButton.jsx";
 
 const API_KEY = import.meta.env.VITE_PARKS_API_KEY;
 const API_BASE_URL = "https://developer.nps.gov/api/v1/thingstodo";
@@ -52,7 +53,8 @@ const HikingTrails = () => {
     return tempDiv.textContent || tempDiv.innerText || '';
   };
 
-  return (
+
+    return (
     <div className={style.trailsList}>
       <h1>Hiking Trails for {parkName}</h1>
       
@@ -79,6 +81,7 @@ const HikingTrails = () => {
                 Learn more
               </a>
             )}
+              <TrailTripButton parkCode={parkCode} title={trail.title} shortDescription={trail.shortDescription} userId={localStorage.getItem("userId")} />
           </li>
         ))}
       </ul>

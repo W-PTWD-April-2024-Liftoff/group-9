@@ -1,0 +1,53 @@
+.tripDetails {
+    padding: 1.25rem 2.188rem;
+    text-align: center;
+    background-color: rgba(238, 245, 238, 0.75);
+}
+
+.tripBtn {
+    margin: 0 5px 30px 5px;
+    background-color: #004d40;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.313rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.tripBtn:hover {
+    background-color: #017e69;
+}
+
+.linkBtn {
+    color: white;
+}
+
+/* Description section */
+.description {
+    margin-top: 20px;
+    text-align: justify;
+    line-height: 1.5;
+}
+
+/* Styled the details links (e.g., View Trails, Campgrounds) */
+.tripUrl {
+    text-align: left;
+    margin: 5px 0 30px 0;
+    color: #015f4f;
+}
+
+.tripUrl a {
+    color: #015f4f;
+    font-weight: bold;
+}
+
+.tripUrl a:hover {
+    color: #149f88;
+}
+
+.tripDetails h3 {
+    text-align: left;
+    margin-top: 20px;
+}
