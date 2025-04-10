@@ -12,6 +12,9 @@ import CampgroundsList from './components/CampgroundsList/CampgroundsList';
 import HikingTrails from './components/HikingTrails/HikingTrails';
 import Header from './components/Header';
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import SubscriptionButton from './components/Subscription/SubscriptionButton';
+;
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -95,6 +98,14 @@ function App() {
                 </ProtectedRoute>
               }
           />
+           <Route
+                      path="/subscriptions"
+                      element={
+                        <ProtectedRoute isAuthenticated={isAuthenticated}>
+                          <SubscriptionButton userId={localStorage.getItem("userId")} /> {/* Render SubscriptionList here */}
+                        </ProtectedRoute>
+                      }
+                  />
           <Route
               path="/park/campgrounds/:id"
               element={
