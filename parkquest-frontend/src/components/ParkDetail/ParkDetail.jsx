@@ -22,33 +22,31 @@ export default function ParkDetail() {
     }
   };
 
-  const subscribeToPark = async () => {
-    const userId = localStorage.getItem("userId");
+const subscribeToPark = async () => {
+  const userId = localStorage.getItem("userId");
 
-    if (!userId) {
-      setMessage("You must be logged in to subscribe.");
-      return;
-    }
+  if (!userId) {
+    setMessage("You must be logged in to subscribe.");
+    return;
+  }
 
-try {
-  const response = await fetch(
-    `http://localhost:8081/api/subscriptions/subscribe?userId=${userId}&parkCode=${park.parkCode}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-      if (!response.ok) {
-        throw new Error("Subscription failed.");
+  try {
+    const response = await fetch(
+      `http://localhost:8081/api/subscriptions/subscribe?userId=${userId}&parkCode=${park.parkCode}`,
+      {
+        method: "POST",
       }
+    );
 
-      setMessage("✅ Subscribed to park updates!");
-    } catch (err) {
-      setMessage("❌ " + err.message);
+    if (!response.ok) {
+      throw new Error("Subscription failed.");
     }
-  };
+
+    setMessage(" Subscribed to park updates!");
+  } catch (err) {
+    setMessage("Failed to subscribe: " + err.message);
+  }
+};
 
   const goBack = () => {
     navigate(-1);
@@ -68,12 +66,12 @@ try {
         Save to My List
       </button>
 
-      {/* 👇 Subscription Button */}
+
       <button className={style.parkBtn} onClick={subscribeToPark}>
         Subscribe to Updates
       </button>
 
-      {/* 👇 Optional Message Display */}
+
       {message && <p className={style.message}>{message}</p>}
 
       <button className={style.parkBtn}>
