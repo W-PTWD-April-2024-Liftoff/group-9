@@ -11,9 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/subscriptions")
+@CrossOrigin(origins = "http://localhost:5173")
+
 public class SubscriptionController {
 
     @Autowired
@@ -27,24 +28,37 @@ public class SubscriptionController {
 
     // Create a new subscription using query parameters
     @PostMapping("/subscribe")
-    public ResponseEntity<String> createSubscription(@RequestParam Long userId, @RequestParam String parkCode) {
-        // Fetch the user and park using the provided userId and parkCode
+    public ResponseEntity<?> createSubscription(@RequestParam Long userId, @RequestParam String parkCode) {
+        System.out.println("=== Subscription Endpoint Hit ===");
+        System.out.println("Received userId: " + userId);
+        System.out.println("Received parkCode: " + parkCode);
         Optional<User> userOptional = userRepository.findById(userId);
-        Optional<Park> parkOptional = parkRepository.findByParkCode(parkCode);
 
-        if (userOptional.isEmpty() || parkOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body("Invalid user or park information.");
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("Invalid user.");
         }
 
-        // Create and save the subscription
+        // Check if the park already exists in the favorite_park table
+        Optional<Park> parkOptional = parkRepository.findByParkCode(parkCode);
+
+        // If the park doesn't exist, create a new park and save it
+        Park park = parkOptional.orElseGet(() -> {
+            Park newPark = new Park();
+            newPark.setParkCode(parkCode);
+            newPark.setFullName("Default Name"); // You can enhance this by fetching the actual park name via an API
+            return parkRepository.save(newPark);  // Save the new park to the favorite_park table
+        });
+
+        // Create a new subscription and associate it with the user and the park
         Subscription subscription = new Subscription();
         subscription.setUser(userOptional.get());
-        subscription.setPark(parkOptional.get());
+        subscription.setPark(park);  // Link the subscription to the park
+        subscriptionRepository.save(subscription);  // Save the subscription to the subscription table
 
-        subscriptionRepository.save(subscription);
-
+        // Return a success message
         return ResponseEntity.ok("Subscription successful!");
     }
+
 
     // Delete a subscription using query parameters
     @DeleteMapping
@@ -68,8 +82,8 @@ public class SubscriptionController {
     }
 
     // Get all subscriptions for a user
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserSubscriptions(@PathVariable Long userId) {
+    @GetMapping("/user")
+    public ResponseEntity<?> getUserSubscriptions(@RequestParam Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {

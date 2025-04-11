@@ -16,7 +16,7 @@ public class Subscription {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "park_code", nullable = false)
+    @JoinColumn(name = "park_id", referencedColumnName = "park_id", nullable = false)
     private Park park;
 
     // Default constructor
