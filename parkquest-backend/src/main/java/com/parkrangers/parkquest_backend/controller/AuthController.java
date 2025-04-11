@@ -69,12 +69,14 @@ public class AuthController {
             String email = body.get("email");
             String username = body.get("username");
             String password = body.get("password");
+            String role = body.getOrDefault("role", "ROLE_USER");
+
 
             if (email == null || username == null || password == null) {
                 throw new IllegalArgumentException("Email, username, and password must be provided.");
             }
 
-            User user = userService.registerUser(email, username, password);
+            User user = userService.registerUser(email, username, password, role);
             return ResponseEntity.ok().body(user); // Return the registered user
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ApiResponse(false, e.getMessage()));

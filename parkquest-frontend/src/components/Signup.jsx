@@ -7,6 +7,8 @@ function Signup() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
+
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
@@ -40,7 +42,8 @@ function Signup() {
             const response = await axios.post('http://localhost:8081/api/auth/signup', {
                 email,
                 username,
-                password
+                password,
+                role: isAdmin ? "ROLE_ADMIN" : "ROLE_USER"
             }, { withCredentials: true });
 
             // Handle successful signup (navigate to login or dashboard)
@@ -93,6 +96,14 @@ function Signup() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                 />
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={isAdmin}
+                        onChange={() => setIsAdmin(!isAdmin)}
+                    />
+                    Register as Admin
+                </label>
                 <button type="submit" className="outline-button">Sign up</button>
             </form>
             <div>

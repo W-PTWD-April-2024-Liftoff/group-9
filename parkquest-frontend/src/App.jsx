@@ -13,6 +13,7 @@ import HikingTrails from './components/HikingTrails/HikingTrails';
 import Trips from './components/Trips/Trips';
 import TripDetails from './components/Trips/TripDetails';
 import Header from './components/Header';
+import ProfilePage from './components/ProfilePage/ProfilePage';
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import SubscriptionButton from './components/Subscription/SubscriptionButton';
 ;
@@ -22,7 +23,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const location = useLocation(); // Get current route
   const isHomePage = location.pathname === "/"; // Check if on home page
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
     // Check user's authentication status
@@ -143,6 +144,15 @@ function App() {
                     </ProtectedRoute>
                 }
             />
+            <Route
+                path="/profile"
+                element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                        <ProfilePage />
+                    </ProtectedRoute>
+                }
+            />
+
         </Routes>
       </div>
     </div>

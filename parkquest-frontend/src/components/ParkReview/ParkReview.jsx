@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './ParkReview.module.css'; // Import the CSS module
+import styles from "./ParkReview.module.css";
 
-const ParkReview = ({ parkId }) => {
+const ParkReview = ({ parkCode, userId }) => {
     const [reviews, setReviews] = useState([]);
     const [reviewText, setReviewText] = useState('');
     const [rating, setRating] = useState(0);
@@ -10,12 +10,12 @@ const ParkReview = ({ parkId }) => {
     // Fetch reviews for a specific park when the component loads
     useEffect(() => {
         fetchReviews();
-    }, [parkId]);
+    }, [parkCode]);
 
     // Fetch all reviews for the specified park
     const fetchReviews = async () => {
         try {
-            const response = await fetch(`http://localhost:8081/parks/reviews/${parkId}`);
+            const response = await fetch(`http://localhost:8081/parks/reviews/${parkCode}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch reviews');
             }
@@ -26,37 +26,44 @@ const ParkReview = ({ parkId }) => {
         }
     };
 
-    // Submit a new review
     const handleSubmitReview = async () => {
-        const userReview = {
-            parkId,
-            reviewText,
-            rating,
-        };
+    if (rating < 1 || rating > 5) {
+        setError("Rating must be between 1 and 5");
+        return;
+    }
 
-        try {
-            const response = await fetch('http://localhost:8080/parks/reviews/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userReview),
-            });
-            if (!response.ok) {
-                throw new Error('Failed to submit review');
-            }
-            fetchReviews(); // Refresh the list of reviews
-            setReviewText('');
-            setRating(0);
-        } catch (err) {
-            setError('Error submitting review');
-        }
+    const userReview = {
+        userId,
+        parkCode,
+        content: reviewText,
+        rating,
     };
+
+    try {
+        const response = await fetch(`http://localhost:8081/park-reviews?userId=${userReview.userId}&parkCode=${userReview.parkCode}&rating=${userReview.rating}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userReview.content), // Sending the review content as the body
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to submit review');
+        }
+        fetchReviews(); // Refresh the list of reviews
+        setReviewText('');
+        setRating(0);
+        setError('');
+    } catch (err) {
+        setError('Error submitting review');
+    }
+};
 
     // Delete a review
     const handleDeleteReview = async (reviewId) => {
         try {
-            const response = await fetch(`http://localhost:8080/parks/reviews/${reviewId}`, {
+            const response = await fetch(`http://localhost:8081/park-reviews/${reviewId}`, {
                 method: 'DELETE',
             });
             if (!response.ok) {

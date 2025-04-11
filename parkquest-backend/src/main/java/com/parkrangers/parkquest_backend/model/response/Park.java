@@ -13,6 +13,9 @@ public class Park {
     @Column(name = "park_id")
     private Long parkId;
 
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
     @Column(name = "fullName")
     private String fullName;
 
@@ -25,6 +28,9 @@ public class Park {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "note_to_self")
+    private String noteToSelf;
+
     @Transient // This means images won't be stored in the database
     private List<Image> images;
 
@@ -35,6 +41,31 @@ public class Park {
     private List<Address> addresses;
 
     public Park() {
+    }
+
+    public Park(Long parkId, Long userId, String fullName, String parkCode, String description, String url, String noteToSelf) {
+        this.parkId = parkId;
+        this.userId = userId;
+        this.fullName = fullName;
+        this.parkCode = parkCode;
+        this.description = description;
+        this.noteToSelf = noteToSelf;
+    }
+
+    public String getNoteToSelf() {
+        return noteToSelf;
+    }
+
+    public void setNoteToSelf(String noteToSelf) {
+        this.noteToSelf = noteToSelf;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Park(String parkCode) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import style from "../ParkDetail/ParkDetail.module.css"
 
-const FavoriteButton = ({ userId, parkCode, fullName, parkDescription }) => {
+const FavoriteButton = ({ userId, parkCode, fullName, description }) => {
     const [isFavorited, setIsFavorited] = useState(false);
 
     const storedUserId = localStorage.getItem("userId");
@@ -32,13 +32,14 @@ const FavoriteButton = ({ userId, parkCode, fullName, parkDescription }) => {
 
     const handleAddToFavorites = async () => {
         try {
-            console.log({ userId, parkCode, fullName, parkDescription });
+            console.log({ userId, parkCode, fullName, description });
             await axios.post("http://localhost:8081/favorites", null, {
                 params: {
                     userId,
                     parkCode,
                     fullName,
-                    parkDescription
+                    description,
+                    noteToSelf: "" //Initial note to self can be empty
                 },
             });
             setIsFavorited(true);
@@ -47,6 +48,7 @@ const FavoriteButton = ({ userId, parkCode, fullName, parkDescription }) => {
         }
     };
 
+    //remove the park from favorites
     const handleRemoveFromFavorites = async () => {
         try {
             await axios.delete("http://localhost:8081/favorites", {

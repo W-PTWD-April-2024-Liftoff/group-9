@@ -22,10 +22,10 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "googleId", nullable = true, unique = true)
-    private String googleId;
+//    @Column(name = "googleId", nullable = true, unique = true)
+//    private String googleId;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable = true, unique = true)
     private String username;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -45,13 +45,13 @@ public class User implements UserDetails {
     public User(Long userId) {
     }
 
-    public String getGoogleId() {
-        return googleId;
-    }
-
-    public void setGoogleId(String googleId) {
-        this.googleId = googleId;
-    }
+//    public String getGoogleId() {
+//        return googleId;
+//    }
+//
+//    public void setGoogleId(String googleId) {
+//        this.googleId = googleId;
+//    }
 
     public Long getUserId() {
         return userId;

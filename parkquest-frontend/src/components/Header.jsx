@@ -10,6 +10,9 @@ const Header = ({ isAuthenticated, onLogout }) => {
             <div>
                 {isAuthenticated ? (
                     <>
+                        <button className="account-button">
+                            <Link to="/profile">Profile</Link>
+                        </button>
                         <button className="account-button" onClick={onLogout}>Logoff</button>
                     </>
                 ) : (

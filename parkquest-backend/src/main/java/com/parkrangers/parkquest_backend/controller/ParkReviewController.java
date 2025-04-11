@@ -1,8 +1,8 @@
 package com.parkrangers.parkquest_backend.controller;
 
 import com.parkrangers.parkquest_backend.model.ParkReview;
-import com.parkrangers.parkquest_backend.service.FavoriteService;
 import com.parkrangers.parkquest_backend.service.ParkReviewService;
+import com.parkrangers.parkquest_backend.service.ParkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ public class ParkReviewController {
     @Autowired
     private ParkReviewService parkreviewService;
     @Autowired
-    private FavoriteService favoriteService;
+    private ParkService parkService;
 
     // Get all park reviews for a specific park
     @GetMapping("/{parkCode}")
@@ -38,7 +38,7 @@ public class ParkReviewController {
 
     @DeleteMapping
     public ResponseEntity<Void> deleteReview(@RequestParam Long userId, @RequestParam String parkCode) {
-        favoriteService.deleteFavorite(userId, parkCode);
+        parkService.deleteFavorite(userId, parkCode);
         return ResponseEntity.ok().build();
     }
     // Edit an existing park review (only the review owner can edit it)

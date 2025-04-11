@@ -5,6 +5,7 @@ import com.parkrangers.parkquest_backend.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class RoleSeeder implements CommandLineRunner {
@@ -13,12 +14,13 @@ public class RoleSeeder implements CommandLineRunner {
     private RoleRepository roleRepository;
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
-        if (roleRepository.findByName("ROLE_USER") == null) {
+        if (!roleRepository.existsByName("ROLE_USER")) {
             roleRepository.save(new Role(null, "ROLE_USER"));
         }
 
-        if (roleRepository.findByName("ROLE_ADMIN") == null) {
+        if (!roleRepository.existsByName("ROLE_ADMIN")) {
             roleRepository.save(new Role(null, "ROLE_ADMIN"));
         }
     }

@@ -119,7 +119,7 @@ const ParksList = ({userId}) => {
               </Link>
             </h3>
             <p>{park.description}</p><br />
-          <FavoriteButton userId={localStorage.getItem("userId")} parkCode={park.parkCode} fullName={park.fullName} parkDescription={park.description} />
+          <FavoriteButton userId={localStorage.getItem("userId")} parkCode={park.parkCode} fullName={park.fullName} description={park.description} />
         </li>
         ))}
     </ul>
