@@ -27,13 +27,17 @@ public class SubscriptionController {
     private ParkRepository parkRepository;
 
     // Create a new subscription using query parameters
-    @PostMapping("/subscribe")
+    @PostMapping("api/subscriptions/subscribe")
     public ResponseEntity<?> createSubscription(@RequestParam Long userId, @RequestParam String parkCode) {
         System.out.println("=== Subscription Endpoint Hit ===");
         System.out.println("Received userId: " + userId);
         System.out.println("Received parkCode: " + parkCode);
         Optional<User> userOptional = userRepository.findById(userId);
-
+        if (userOptional.isPresent()) {
+            System.out.println("User object: " + userOptional.get());
+        } else {
+            System.out.println("❌ No user found with ID: " + userId);
+        }
         if (userOptional.isEmpty()) {
             return ResponseEntity.badRequest().body("Invalid user.");
         }
