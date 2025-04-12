@@ -1,54 +1,75 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import style from "../ParkDetail/ParkDetail.module.css";
 
-const SubscriptionButton = ({ parkCode, userId }) => {
+const SubscriptionButton = ({ userId, parkCode }) => {
   const [subscribed, setSubscribed] = useState(false);
   const [error, setError] = useState("");
-  const storedUserId = localStorage.getItem("userId");
 
-  const id = userId || storedUserId;
+  // Fallback to localStorage if userId is null
+  const storedUserId = localStorage.getItem("userId");
+  if (userId === null) userId = storedUserId;
+
+  useEffect(() => {
+    const checkSubscription = async () => {
+      if (!userId) {
+        console.error("❌ User ID is missing.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://localhost:8081/subscriptions/${userId}`);
+        const subscriptions = response.data;
+
+        if (subscriptions && subscriptions.some((sub) => sub.parkCode === parkCode)) {
+          setSubscribed(true);
+        }
+      } catch (err) {
+        console.error("Error fetching subscriptions:", err);
+      }
+    };
+
+    checkSubscription();
+  }, [parkCode]);
 
   const handleSubscribe = async () => {
-    if (!id) {
-      setError("User ID is missing. Please log in again.");
-      return;
-    }
-
     try {
-      const response = await fetch(
-        `http://localhost:8081/api/subscriptions/subscribe?userId=${id}&parkCode=${parkCode}`,
-        { method: "POST" }
-      );
+      console.log("📩 Subscribing with:", { userId, parkCode });
 
-      if (!response.ok) throw new Error("Subscription failed.");
+      await axios.post("http://localhost:8081/subscriptions/subscribe", null, {
+        params: {
+          userId,
+          parkCode,
+        },
+      });
+
       setSubscribed(true);
       setError("");
     } catch (err) {
-      setError(err.message);
+      console.error("❌ Error during subscription:", err);
+      setError("Subscription failed.");
     }
   };
 
   const handleUnsubscribe = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8081/api/subscriptions?userId=${id}&parkCode=${parkCode}`,
-        { method: "DELETE" }
-      );
-
-      if (!response.ok) throw new Error("Unsubscription failed.");
+      await axios.delete("http://localhost:8081/subscriptions/unsubscribe", {
+        params: { userId, parkCode },
+      });
       setSubscribed(false);
-      setError("");
     } catch (err) {
-      setError(err.message);
+      console.error("Error unsubscribing:", err);
     }
   };
 
   return (
-    <div>
-      {error && <p className="text-red-500">{error}</p>}
-      <button onClick={subscribed ? handleUnsubscribe : handleSubscribe}>
-        {subscribed ? "Unsubscribe" : "Subscribe"}
-      </button>
-    </div>
+    <button
+      onClick={subscribed ? handleUnsubscribe : handleSubscribe}
+      className={`subscribe-button ${subscribed ? "subscribed" : ""}`}
+      id={style.parkBtn}
+    >
+      {subscribed ? "Subscribed" : "Subscribe"}
+    </button>
   );
 };
 
