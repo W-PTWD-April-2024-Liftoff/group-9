@@ -5,11 +5,13 @@ import com.parkrangers.parkquest_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+//import org.springframework.security.access.prepost.PreAuthorize;
+
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("/api/users")
 @CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
@@ -51,4 +53,26 @@ public class UserController {
             return ResponseEntity.status(500).body(Map.of("message", "Internal server error: " + e.getMessage()));
         }
     }
+//   @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}/promote")
+    public ResponseEntity<?> promoteUserToAdmin(@PathVariable Long id) {
+        try {
+            userService.promoteUserToAdmin(id);
+            return ResponseEntity.ok(Map.of("message", "User promoted to admin successfully."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
+    }
+
+//   @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUserById(id);
+            return ResponseEntity.ok(Map.of("message", "User deleted successfully."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
+    }
+
 }

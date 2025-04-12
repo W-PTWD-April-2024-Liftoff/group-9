@@ -111,7 +111,6 @@ public class UserService {
             user.setRoles(modifiableRoles);
         }
 
-
         System.out.println("Attempting to save updated user: " + user);
         try {
             System.out.println("Saving user with roles: " + user.getRoles());
@@ -123,6 +122,34 @@ public class UserService {
             e.printStackTrace();
             throw e; // Re-throw for proper handling in the controller
         }
+    }
 
+    // Promote user to ADMIN
+    public void promoteUserToAdmin(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // Fetch the admin role
+        Role adminRole = roleRepository.findByName("ROLE_ADMIN");
+        if (adminRole == null) {
+            throw new IllegalArgumentException("ROLE_ADMIN not found");
+        }
+
+
+        // Add the admin role to the user if not already present
+        if (!user.getRoles().contains(adminRole)) {
+            user.getRoles().add(adminRole);
+            userRepository.save(user); // Save the updated user
+        }
+    }
+
+    // Delete user by ID
+    public void deleteUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            userRepository.deleteById(id); // Delete the user from the database
+        } else {
+            throw new IllegalArgumentException("User not found");
+        }
     }
 }
