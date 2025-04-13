@@ -1,0 +1,62 @@
+.subscriptionList {
+    text-align: center;
+    padding: 1.25rem 2.188rem;
+}
+
+.subscriptionList ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .938rem;
+    margin: 0;
+    padding: 0;
+}
+
+.subscriptionList li {
+    background: #f4f4f4;
+    padding: .938rem;
+    border-radius: .5rem;
+    box-shadow: .125rem .125rem .313rem rgba(0, 0, 0, 0.15);
+    text-align: justify;
+}
+
+.subscriptionList h4 {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.subscriptionList p {
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.subscriptionList a {
+    color: #015f4f;
+    text-decoration: none;
+}
+
+.subscriptionList a:hover {
+    color: #149f88;
+}
+
+.unsubscribeButton {
+    background-color: transparent;
+    color: #b22222;
+    font-size: .875rem;
+    padding: .625rem 1.125rem;
+    border-radius: .313rem;
+    border: .125rem solid #b22222;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.unsubscribeButton:hover {
+    background-color: #b22222;
+    color: white;
+}
+
+.unsubscribeButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 .188rem rgba(178, 34, 34, 0.5);
+}
