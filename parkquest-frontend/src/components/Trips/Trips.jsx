@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import style from "./Trips.module.css";
 
 const Trips = ({userId}) => {
     const [trips, setTrips] = useState([]);
     const [error, setError] = useState(null);
     const [hoveredTrip, setHoveredTrip] = useState(null);
-
+    const navigate = useNavigate();
     const storedUserId = localStorage.getItem("userId");
+
 
     // Fetch trips for the user when the component mounts or `userId` changes
     useEffect(() => {
@@ -20,7 +21,7 @@ const Trips = ({userId}) => {
                     throw new Error("User ID is missing. Please log in again.");
                 }
 
-                const response = await fetch(`http://localhost:8081/trips/${id}`);
+                const response = await fetch(`http://localhost:8081/trips/user/${id}`);
 
                 if (!response.ok) {
                     throw new Error("Failed to fetch trips. Please try again.");
@@ -66,8 +67,9 @@ const Trips = ({userId}) => {
 
     // Navigate to TripDetails for editing
     const handleEdit = (trip) => {
-        navigate(`/tripdetails/${trip.parkCode}`, { state: { trip } });
+        navigate(`/trips/${trip.tripId}`); // Navigate with tripId
     };
+
 
 
     // Function to fetch a trip by parkCode
@@ -110,14 +112,16 @@ const Trips = ({userId}) => {
                   {trips.map((trip) => (
                       <li key={trip.tripId} className={style.tripItem}>
                           {/* Park Name (Clickable to navigate to TripDetails) */}
-                          <h3 className={style.tripName}>
-                              <Link
-                                  to={`/tripdetails/${trip.parkCode}`}
-                                  state={{ trip }}
-                                  className={style.link}
-                              >
-                                  {trip.parkName}
-                              </Link>
+                          <h3
+                              className={style.tripName}
+                              onClick={() => handleEdit(trip)}
+                              role="button"
+                              tabIndex={0} // Accessibility for keyboard navigation
+                              onKeyDown={(e) => {
+                                  if (e.key === "Enter") handleEdit(trip); // Allows "Enter" key to trigger click
+                              }}
+                          >
+                              {trip.parkName}
                           </h3>
                           {/* Park Description */}
                           <p className={style.description}>{trip.parkDescription || "No description available"}</p>

@@ -55,26 +55,23 @@ public class TripService {
     }
 
     // Delete a trip by parkCode
-    public boolean deleteTripByParkCode(String parkCode) {
-        // Check for the existence of trips by parkCode
-        if (tripRepository.findByParkCode(parkCode).isEmpty()) {
-            return false; // No trips found for the given parkCode
+    public boolean deleteTripById(Long tripId) {
+        if (!tripRepository.existsById(tripId)) {
+            return false;
         }
 
-        // Delete all trips matching the parkCode
-        tripRepository.deleteByParkCode(parkCode);
+        tripRepository.deleteById(tripId);
         return true;
     }
 
     // Add or update hiking trails and trail description for a trip
-    public Trip addOrUpdateHikingTrails(String parkCode, String hikingTrail, String trailDescription) {
-        // Find the trip by parkCode
-        Optional<Trip> optionalTrip = tripRepository.findByParkCode(parkCode).stream().findFirst(); // Assumes unique parkCode
+    public Trip addOrUpdateHikingTrails(Long tripId, String hikingTrail, String trailDescription) {
+        Optional<Trip> optionalTrip = tripRepository.findById(tripId);
+
         if (optionalTrip.isEmpty()) {
-            return null;  // Trip with the given parkCode not found
+            throw new IllegalStateException("Trip with ID " + tripId + " not found.");
         }
 
-        // Update fields and save the trip
         Trip trip = optionalTrip.get();
         trip.setHikingTrail(hikingTrail);
         trip.setTrailDescription(trailDescription);
@@ -83,14 +80,13 @@ public class TripService {
     }
 
     // Delete hiking trails for a trip by parkCode
-    public boolean deleteHikingTrails(String parkCode) {
-        // Find the trip by parkCode
-        Optional<Trip> optionalTrip = tripRepository.findByParkCode(parkCode).stream().findFirst();
+    public boolean deleteHikingTrails(Long tripId) {
+        Optional<Trip> optionalTrip = tripRepository.findById(tripId);
+
         if (optionalTrip.isEmpty()) {
-            return false; // Trip with parkCode not found
+            return false;
         }
 
-        // Update fields to clear hiking trails and save
         Trip trip = optionalTrip.get();
         trip.setHikingTrail(null);
         trip.setTrailDescription(null);
@@ -100,30 +96,29 @@ public class TripService {
     }
 
     // Add or update a campground and campground description for a trip
-    public Trip addOrUpdateCampground(String parkCode, String campground, String campgroundDescription) {
-        // Find the trip by parkCode
-        Optional<Trip> optionalTrip = tripRepository.findByParkCode(parkCode).stream().findFirst(); // Assumes unique parkCode
-        if (optionalTrip.isEmpty()) {
-            return null;  // Trip with the given parkCode not found
+    public Trip addOrUpdateCampground(Long tripId, String campground, String campgroundDescription) {
+        Optional<Trip> tripOptional = tripRepository.findById(tripId);
+        if (!tripOptional.isPresent()) {
+            throw new IllegalArgumentException("Trip not found");
         }
+        Trip trip = tripOptional.get();
 
-        // Update fields and save the trip
-        Trip trip = optionalTrip.get();
+        // Update campground fields
         trip.setCampground(campground);
         trip.setCampgroundDescription(campgroundDescription);
 
+        // Save to the database
         return tripRepository.save(trip);
     }
 
     // Delete campground information for a trip by parkCode
-    public boolean deleteCampground(String parkCode) {
-        // Find the trip by parkCode
-        Optional<Trip> optionalTrip = tripRepository.findByParkCode(parkCode).stream().findFirst();
+    public boolean deleteCampground(Long tripId) {
+        Optional<Trip> optionalTrip = tripRepository.findById(tripId);
+
         if (optionalTrip.isEmpty()) {
-            return false;  // Trip with the given parkCode not found
+            return false;
         }
 
-        // Update fields to clear campground data and save
         Trip trip = optionalTrip.get();
         trip.setCampground(null);
         trip.setCampgroundDescription(null);
@@ -133,38 +128,34 @@ public class TripService {
     }
 
     // Add or update startDate or endDate for a trip
-    public Trip addOrUpdateTripDates(String parkCode, LocalDate startDate, LocalDate endDate) {
-        // Find the trip by parkCode
-        Optional<Trip> optionalTrip = tripRepository.findByParkCode(parkCode).stream().findFirst(); // Assumes unique parkCode
+    public Trip addOrUpdateTripDates(Long tripId, LocalDate startDate, LocalDate endDate) {
+        Optional<Trip> optionalTrip = tripRepository.findById(tripId);
+
         if (optionalTrip.isEmpty()) {
-            return null; // Trip with the given parkCode not found
+            throw new IllegalStateException("Trip with ID " + tripId + " not found.");
         }
 
-        // Update fields and save the trip
         Trip trip = optionalTrip.get();
-        if (startDate != null) {
-            trip.setStartDate(startDate);
-        }
-        if (endDate != null) {
-            trip.setEndDate(endDate);
-        }
+        trip.setStartDate(startDate);
+        trip.setEndDate(endDate);
 
         return tripRepository.save(trip);
     }
 
     // Delete startDate or endDate for a trip
-    public boolean deleteTripDates(String parkCode, boolean clearStartDate, boolean clearEndDate) {
-        // Find the trip by parkCode
-        Optional<Trip> optionalTrip = tripRepository.findByParkCode(parkCode).stream().findFirst();
+    public boolean deleteTripDates(Long tripId, boolean clearStartDate, boolean clearEndDate) {
+        Optional<Trip> optionalTrip = tripRepository.findById(tripId);
+
         if (optionalTrip.isEmpty()) {
-            return false; // Trip with the given parkCode not found
+            return false;
         }
 
-        // Clear the specified date fields and save
         Trip trip = optionalTrip.get();
+
         if (clearStartDate) {
             trip.setStartDate(null);
         }
+
         if (clearEndDate) {
             trip.setEndDate(null);
         }
@@ -173,4 +164,7 @@ public class TripService {
         return true;
     }
 
+    public Trip getTripById(Long tripId) {
+        return tripRepository.findById(tripId).orElse(null); // Use repository to find trip by its ID
+    }
 }

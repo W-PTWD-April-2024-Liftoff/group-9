@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import style from "./FavoritesList.module.css";
+import TripButton from "../Trips/Buttons/TripButton";
 
 const FavoritesList = ({userId}) => {
   const [favorites, setFavorites] = useState([]);
@@ -138,6 +139,9 @@ const FavoritesList = ({userId}) => {
     return (
     <div className={style.favoriteList}>
         <button className={style.outlineButton}>
+            <Link to="/trips" className={style.linkBtn}>My Trips</Link>
+        </button>
+        <button className={style.outlineButton}>
         <Link to="/parklist">Go to Parks List</Link>
       </button>
       <h1>My Favorite Parks</h1>
@@ -203,6 +207,12 @@ const FavoritesList = ({userId}) => {
                 )}
 
                 <br />
+                <TripButton
+                    userId={localStorage.getItem("userId")}
+                    parkCode={park.parkCode}
+                    fullName={park.fullName}
+                    description={park.description}
+                />
                 {/* Button to remove the park as a favorite */}
                 <button onClick={() => removeFavorite(favorite.parkCode)} className={style.parkBtn}>Remove</button>
             </li>

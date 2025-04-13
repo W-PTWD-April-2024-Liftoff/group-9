@@ -13,6 +13,7 @@ const HikingTrails = () => {
   const parkName = location.state?.parkName;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { fromTripDetails = false, tripId = null } = useLocation().state || {}; //default values
 
   useEffect(() => {
       if (!parkCode) return;
@@ -81,7 +82,15 @@ const HikingTrails = () => {
                 Learn more
               </a>
             )}
-              <TrailTripButton parkCode={parkCode} title={trail.title} shortDescription={trail.shortDescription} userId={localStorage.getItem("userId")} />
+              {/* Conditionally render TrailTripButton */}
+              {fromTripDetails && tripId && (
+                  <TrailTripButton
+                      tripId={tripId}
+                      title={trail.title}
+                      shortDescription={trail.shortDescription}
+                      userId={localStorage.getItem("userId")}
+                  />
+              )}
           </li>
         ))}
       </ul>

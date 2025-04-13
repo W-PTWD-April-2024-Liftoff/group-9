@@ -4,7 +4,7 @@ import { useRef } from "react";
 import FavoriteButton from "../ParkList/FavoriteButton.jsx";
 import ParkReview from "../ParkReview/ParkReview.jsx";
 import SubscriptionButton from "../Subscription/SubscriptionButton.jsx";
-
+import TripButton from "../Trips/Buttons/TripButton.jsx";
 
 export default function ParkDetail({ userId }) {
   const location = useLocation();
@@ -16,14 +16,6 @@ export default function ParkDetail({ userId }) {
   if (!park) {
     return <p>No park data available.</p>; // Handle case where data is missing
   }
-
-  // const saveToFavorites = () => {
-  //   const existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  //   if (!existingFavorites.some(fav => fav.id === park.id)) {
-  //     const updatedFavorites = [...existingFavorites, park];
-  //     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-  //   }
-  // };
 
   const goBack = () => {
     navigate(-1);
@@ -42,13 +34,21 @@ export default function ParkDetail({ userId }) {
        <SubscriptionButton userId={localStorage.getItem("userId")} parkCode={park.parkCode} />
 
 
-      {/*<button className={style.parkBtn} onClick={saveToFavorites}>Save to My List</button>*/}
       <FavoriteButton userId={localStorage.getItem("userId")} parkCode={park.parkCode} fullName={park.fullName} description={park.description} />
 
       <button className={style.parkBtn}>
         <Link to="/favorites" className={style.linkBtn}>My Favorite Parks</Link>
       </button>
 
+      <TripButton
+          userId={localStorage.getItem("userId")}
+          parkCode={park.parkCode}
+          fullName={park.fullName}
+          description={park.description}
+      />
+        <button className={style.parkBtn}>
+            <Link to="/trips" className={style.linkBtn}>My Trips</Link>
+        </button>
       <button className={style.parkBtn} onClick={goBack}>Back to Search</button>
 
       <h1>{park.fullName}</h1>
@@ -84,21 +84,21 @@ export default function ParkDetail({ userId }) {
       </p>
 
       <h3>Activities:</h3>
-      <p className={style.activities}>
-        {park.activities && park.activities.length > 0 ?
-        park.activities.map(a => a.name).join(", ") :
+      <p className={style.activities}> 
+        {park.activities && park.activities.length > 0 ? 
+        park.activities.map(a => a.name).join(", ") : 
           "No activities available"}
       </p>
 
       <p className={style.parkUrl}>
-        <Link
-          to={`/park/hiking/${park.parkCode}`}
+        <Link 
+          to={`/park/hiking/${park.parkCode}`} 
           state={{ parkName: park.fullName }}
         >
           See hiking trails in {park.fullName}
         </Link>
       </p>
-
+      
       {park.addresses?.length > 0 && (
         <div>
           <h3>Address:</h3>
@@ -110,8 +110,8 @@ export default function ParkDetail({ userId }) {
       )}
 
       <button className={style.parkBtn}>
-        <Link
-          to={`/park/campgrounds/${park.parkCode}`}
+        <Link 
+          to={`/park/campgrounds/${park.parkCode}`} 
           className={style.linkBtn}
           state={{ parkName: park.fullName }}
         >
@@ -120,7 +120,7 @@ export default function ParkDetail({ userId }) {
       </button>
 
       <ParkReview parkCode={park.parkCode} userId={userId}/>
-
+      
     </div>
   );
 }
