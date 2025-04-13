@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    private boolean IsAdmin;
+   private boolean IsAdmin;
 
     @ManyToMany(fetch = FetchType.EAGER)  // Eager fetch ensures roles are loaded immediately with the user
     @JoinTable(
