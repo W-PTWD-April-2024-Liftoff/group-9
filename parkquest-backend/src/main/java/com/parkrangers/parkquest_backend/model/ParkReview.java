@@ -1,5 +1,6 @@
 package com.parkrangers.parkquest_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,17 +11,29 @@ public class ParkReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
-    @Column(name = "user_id", nullable = false) // userId as a field
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name="rating", nullable = false)
-    private int rating;         // Rating out of 5
+    @Column(name = "rating", nullable = false)
+    private int rating;
 
-    @Column (name="parkcode", nullable = false)
-    private String parkCode;      // parkCode as a simple string (not linked to the Park entity)
+    @Column(name = "parkcode", nullable = false)
+    private String parkCode;
+
+    // Relationship to User entity (optional, if needed to fetch user details via JPA)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
+
+    // Transient field to hold username dynamically (not stored in DB)
+    @Transient
+    private String username;
+
+    // ---------- Getters & Setters ----------
 
     public Long getReviewId() {
         return reviewId;
@@ -60,5 +73,21 @@ public class ParkReview {
 
     public void setParkCode(String parkCode) {
         this.parkCode = parkCode;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

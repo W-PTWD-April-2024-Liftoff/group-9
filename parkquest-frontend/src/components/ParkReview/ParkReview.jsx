@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './ParkReview.module.css';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt, FaStar } from 'react-icons/fa';
 
-const ParkReview = ({ parkCode, userId }) => {
+const ParkReview = ({ parkCode, userId, isAdmin }) => {
     const [reviews, setReviews] = useState([]);
     const [reviewText, setReviewText] = useState('');
     const [rating, setRating] = useState(0);
@@ -60,7 +60,7 @@ const ParkReview = ({ parkCode, userId }) => {
         if (!userConfirmed) return;
 
         try {
-            const response = await fetch(`http://localhost:8081/park-reviews/${reviewId}?userId=${userId}`, {
+            const response = await fetch(`http://localhost:8081/park-reviews/${reviewId}?userId=${userId}&isAdmin=${isAdmin}`, {
                 method: 'DELETE',
             });
 
@@ -68,13 +68,11 @@ const ParkReview = ({ parkCode, userId }) => {
                 throw new Error('Failed to delete review');
             }
 
-            // Refresh the reviews list after successful deletion
             fetchReviews();
         } catch (err) {
             setError('Error deleting review');
         }
     };
-
 
     const handleEditReview = (reviewId, reviewContent, reviewRating) => {
         setEditingReviewId(reviewId);
@@ -110,16 +108,32 @@ const ParkReview = ({ parkCode, userId }) => {
         }
     };
 
+    const renderStars = (selectedRating, onChange) => {
+        return (
+            <div className={styles.starContainer}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                    <FaStar
+                        key={star}
+                        className={star <= selectedRating ? styles.filledStar : styles.emptyStar}
+                        onClick={() => onChange(star)}
+                    />
+                ))}
+            </div>
+        );
+    };
+
     const renderReviews = () => {
         return reviews.map((review) => (
             <div key={review.reviewId} className={styles.review}>
                 <div className={styles.reviewHeader}>
-                    <span className={styles.userId}>{`user ${review.userId}`}</span>
-                    {String(review.userId) === String(userId) && (
+                    <span className={styles.userId}>{review.username || `User ${review.userId}`}</span>
+                    {(String(review.userId) === String(userId) || isAdmin) && (
                         <div className={styles.reviewActions}>
-                            <button onClick={() => handleEditReview(review.reviewId, review.content, review.rating)} className={styles.editBtn}>
-                                <FaEdit />
-                            </button>
+                            {String(review.userId) === String(userId) && (
+                                <button onClick={() => handleEditReview(review.reviewId, review.content, review.rating)} className={styles.editBtn}>
+                                    <FaEdit />
+                                </button>
+                            )}
                             <button onClick={() => handleDeleteReview(review.reviewId)} className={styles.deleteBtn}>
                                 <FaTrashAlt />
                             </button>
@@ -127,7 +141,7 @@ const ParkReview = ({ parkCode, userId }) => {
                     )}
                 </div>
                 <p>{review.content}</p>
-                <p><strong>Rating:</strong> {review.rating}</p>
+                <p><strong>Rating:</strong> {renderStars(review.rating, () => {})}</p>
             </div>
         ));
     };
@@ -143,15 +157,7 @@ const ParkReview = ({ parkCode, userId }) => {
                     placeholder="Write your review..."
                     className={styles.reviewTextarea}
                 />
-                <input
-                    type="number"
-                    value={editingReviewId ? editingRating : rating}
-                    onChange={(e) => editingReviewId ? setEditingRating(Number(e.target.value)) : setRating(Number(e.target.value))}
-                    min="1"
-                    max="5"
-                    placeholder="Rating (1-5)"
-                    className={styles.ratingInput}
-                />
+                {renderStars(editingReviewId ? editingRating : rating, editingReviewId ? setEditingRating : setRating)}
                 <button
                     onClick={editingReviewId ? handleSaveEditReview : handleSubmitReview}
                     className={styles.submitBtn}

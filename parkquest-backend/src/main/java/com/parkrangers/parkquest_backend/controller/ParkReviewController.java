@@ -16,29 +16,28 @@ import java.util.List;
 public class ParkReviewController {
 
     @Autowired
-    private ParkReviewService parkreviewService;
+    private ParkReviewService parkReviewService;
+
     @Autowired
     private ParkService parkService;
 
     // Get all park reviews for a specific park
     @GetMapping("/{parkCode}")
     public List<ParkReview> getReviewsForPark(@PathVariable String parkCode) {
-        return parkreviewService.getReviewsForPark(parkCode);
+        return parkReviewService.getReviewsForPark(parkCode);
     }
 
     // Create a new park review for a specific park
     @PostMapping
     public ResponseEntity<ParkReview> addReview(@RequestBody ParkReviewRequest request) {
-        ParkReview review = parkreviewService.createReview(request.getUserId(), request.getParkCode(), request.getContent(), request.getRating());
+        ParkReview review = parkReviewService.createReview(request.getUserId(), request.getParkCode(), request.getContent(), request.getRating());
         return ResponseEntity.ok(review);
     }
 
     // Edit an existing park review (only the review owner can edit it)
     @PutMapping("/{reviewId}")
-    public ResponseEntity<ParkReview> editReview(
-            @PathVariable Long reviewId,
-            @RequestBody ParkReviewRequest request) {
-        ParkReview updatedReview = parkreviewService.editReview(request.getUserId(), request.getParkCode(), request.getContent(), reviewId,  request.getRating());
+    public ResponseEntity<ParkReview> editReview(@PathVariable Long reviewId, @RequestBody ParkReviewRequest request) {
+        ParkReview updatedReview = parkReviewService.editReview(request.getUserId(), request.getParkCode(), request.getContent(), reviewId, request.getRating());
         if (updatedReview != null) {
             return ResponseEntity.ok(updatedReview);
         } else {
@@ -46,14 +45,14 @@ public class ParkReviewController {
         }
     }
 
-    // Delete a park review (only the review owner can delete it)
+    // Delete a park review (only the review owner can delete it or if admin)
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId, @RequestParam Long userId) {
-        boolean deleted = parkreviewService.deleteReview(reviewId, userId);
+    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId, @RequestParam Long userId, @RequestParam(required = false, defaultValue = "false") boolean isAdmin) {
+        boolean deleted = parkReviewService.deleteReview(reviewId, userId, isAdmin);
         if (deleted) {
-            return ResponseEntity.noContent().build();  // Successfully deleted
+            return ResponseEntity.noContent().build(); // Successfully deleted
         } else {
-            return ResponseEntity.notFound().build();   // Review not found or user does not own the review
+            return ResponseEntity.notFound().build(); // Not found or unauthorized
         }
     }
 }
