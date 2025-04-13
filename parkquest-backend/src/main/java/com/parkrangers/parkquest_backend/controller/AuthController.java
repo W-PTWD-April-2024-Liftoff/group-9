@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173") // Frontend's origin domain
+@CrossOrigin(origins = "http://localhost:3000") // Frontend's origin domain
 public class AuthController {
 
     @Autowired

@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/favorites")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FavoriteController {
     @Autowired
     private ParkService parkService;

@@ -91,7 +91,7 @@ ParkQuest is a user-friendly web application designed to help users explore and 
    ```
        npm run dev
     ```
-    * The frontend should start at: http://localhost:5173
+    * The frontend should start at: http://localhost:3000
 
 ## Deployment
 

@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ParkRepository extends JpaRepository<Park, Long> {
     List<Park> findByUserId(Long userId);
     Optional<Park> findByUserIdAndParkCode(Long userId, String parkCode);
+    Optional<Park> findByParkCode(String parkCode);
 }

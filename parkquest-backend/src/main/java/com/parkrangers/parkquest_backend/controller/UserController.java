@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("api/users")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     @Autowired
