@@ -1,6 +1,7 @@
 package com.parkrangers.parkquest_backend.controller;
 
 import com.parkrangers.parkquest_backend.model.ParkReview;
+import com.parkrangers.parkquest_backend.model.request.ParkReviewRequest;
 import com.parkrangers.parkquest_backend.service.ParkReviewService;
 import com.parkrangers.parkquest_backend.service.ParkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequestMapping("/park-reviews")
 @CrossOrigin(origins = "http://localhost:5173")
 public class ParkReviewController {
+
     @Autowired
     private ParkReviewService parkreviewService;
     @Autowired
@@ -26,30 +28,17 @@ public class ParkReviewController {
 
     // Create a new park review for a specific park
     @PostMapping
-    public ResponseEntity<ParkReview> addReview(
-            @RequestParam Long userId,
-            @RequestParam String parkCode,
-            @RequestBody String content,
-            @RequestParam int rating
-    ){
-        ParkReview review = parkreviewService.createReview(userId, parkCode, content, rating);
+    public ResponseEntity<ParkReview> addReview(@RequestBody ParkReviewRequest request) {
+        ParkReview review = parkreviewService.createReview(request.getUserId(), request.getParkCode(), request.getContent(), request.getRating());
         return ResponseEntity.ok(review);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteReview(@RequestParam Long userId, @RequestParam String parkCode) {
-        parkService.deleteFavorite(userId, parkCode);
-        return ResponseEntity.ok().build();
-    }
     // Edit an existing park review (only the review owner can edit it)
-    @PutMapping
+    @PutMapping("/{reviewId}")
     public ResponseEntity<ParkReview> editReview(
-            @RequestParam Long userId,
-            @RequestParam String parkCode,
-            @RequestBody String content,
-            @RequestParam int rating
-    ){
-        ParkReview updatedReview = parkreviewService.editReview(userId, parkCode, content, rating);
+            @PathVariable Long reviewId,
+            @RequestBody ParkReviewRequest request) {
+        ParkReview updatedReview = parkreviewService.editReview(request.getUserId(), request.getParkCode(), request.getContent(), reviewId,  request.getRating());
         if (updatedReview != null) {
             return ResponseEntity.ok(updatedReview);
         } else {
@@ -57,5 +46,14 @@ public class ParkReviewController {
         }
     }
 
-
+    // Delete a park review (only the review owner can delete it)
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId, @RequestParam Long userId) {
+        boolean deleted = parkreviewService.deleteReview(reviewId, userId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();  // Successfully deleted
+        } else {
+            return ResponseEntity.notFound().build();   // Review not found or user does not own the review
+        }
+    }
 }

@@ -13,8 +13,10 @@ export default function CampgroundsList() {
   const parkName = location.state?.parkName;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { fromTripDetails = false, tripId = null } = location.state || {}; // Default values
 
-  useEffect(() => {
+
+    useEffect(() => {
     if (!parkCode) return;
 
     fetch(`${API_BASE_URL}?parkCode=${parkCode}&api_key=${API_KEY}`)
@@ -52,7 +54,15 @@ export default function CampgroundsList() {
               </Link>
             </h3>
             <p>{campground.description}</p>
-              <CampTripButton parkCode={parkCode} title={campground.name} shortDescription={campground.description} userId={localStorage.getItem("userId")} />
+              {/* Conditionally render TrailTripButton */}
+              {fromTripDetails && tripId && (
+                  <CampTripButton
+                      tripId={tripId}
+                      name={campground.name}
+                      description={campground.description}
+                      userId={localStorage.getItem("userId")}
+                  />
+                  )}
           </li>
         ))}
       </ul>

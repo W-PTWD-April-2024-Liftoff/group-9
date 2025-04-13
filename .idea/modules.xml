@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/group-9.iml" filepath="$PROJECT_DIR$/.idea/group-9.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/parkquest-backend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/parkquest-backend.main.iml" />
     </modules>
   </component>
 </project>

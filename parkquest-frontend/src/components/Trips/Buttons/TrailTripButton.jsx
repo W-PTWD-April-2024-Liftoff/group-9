@@ -3,7 +3,7 @@ import axios from "axios";
 import style from "../Trips.module.css";
 
 
-const TrailTripButton = ({userId, parkCode, title, shortDescription}) => {
+const TrailTripButton = ({userId, tripId, title, shortDescription}) => {
     const [isSaved, setIsSaved] = useState(false);
 
     const storedUserId = localStorage.getItem("userId");
@@ -12,53 +12,48 @@ const TrailTripButton = ({userId, parkCode, title, shortDescription}) => {
     //check if the trail is favorited
     useEffect(() => {
         const checkIfSaved = async () => {
-            if (!userId) {
-                throw new Error("User ID is missing. Please log in again.");
+            if (!userId || !tripId) {
+                throw new Error("Missing User ID or Trip ID. Please log in again.");
             }
             try {
-                const response = await axios.get(`http://localhost:8081/trips/${parkCode}`);
-                const trails = response.data;
-                if (trips && trips.some((trip) => trip.hikingTrail === title)) {
+                const response = await axios.get(`http://localhost:8081/trips/${tripId}`);
+                const trip = response.data;
+                if (trip?.hikingTrail === title) {
                     setIsSaved(true);
                 }
             } catch (err) {
-                console.error("Error fetching trips:", err);
+                console.error("Error fetching trip data:", err);
             }
         };
         checkIfSaved();
-    }, [parkCode]);
+    }, [tripId, title]);
 
     const handleAddTrailToTrip = async () => {
-        try{
-            console.log({userId, parkCode, title, shortDescription});
-            await axios.post(`http://localhost:8081/trips/${parkCode}`, null, {
-                params: {
-                    title,
-                    shortDescription
-                },
+        try {
+            console.log({ userId, tripId, title, shortDescription });
+            await axios.put(`http://localhost:8081/trips/${tripId}/hiking-trails`, {
+                hikingTrail: title,
+                trailDescription: shortDescription,
             });
             setIsSaved(true);
         } catch (err) {
-            console.error("Error adding to trips:", err);
+            console.error("Error adding to trip:", err);
         }
     };
 
     const handleRemoveTrailFromTrip = async () => {
-        try{
-            await axios.delete(`http://localhost:8081/trips/${parkCode}`, {
-                params: {userId, parkCode},
-            });
+        try {
+            await axios.delete(`http://localhost:8081/trips/${tripId}/hiking-trails`);
             setIsSaved(false);
         } catch (err) {
-            console.error("Error removing from trips:", err);
+            console.error("Error removing from trip:", err);
         }
     };
 
     return (
         <button
             onClick={isSaved ? handleRemoveTrailFromTrip : handleAddTrailToTrip}
-            className={`trail-trip-button ${isSaved ? "saved" : ""}`}
-            id={style.parkBtn}
+            className={`${style.tripBtn} ${isSaved ? style.saved : ""}`}
             >
             {isSaved ? "Saved" : "Add to Trip"}
         </button>

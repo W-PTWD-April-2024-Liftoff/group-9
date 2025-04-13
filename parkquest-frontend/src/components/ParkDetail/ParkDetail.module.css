@@ -76,7 +76,7 @@ figcaption {
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  padding: 0 1rem;
+  padding: 0 0.5rem 3rem 0.5rem;
   user-select: none;
   color: #b0b0b0;
 }

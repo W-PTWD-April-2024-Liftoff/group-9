@@ -5,7 +5,7 @@ const Header = ({ isAuthenticated, onLogout }) => {
     return (
         <header>
             <h2 id="website-name">
-                <Link to={isAuthenticated ? "/dashboard" : "/app"} id="website-name">ParkQuest</Link>
+                <Link to={isAuthenticated ? "/dashboard" : "/"} id="website-name">ParkQuest</Link>
             </h2>
             <div>
                 {isAuthenticated ? (

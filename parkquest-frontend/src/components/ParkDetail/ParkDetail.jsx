@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import FavoriteButton from "../ParkList/FavoriteButton.jsx";
 import ParkReview from "../ParkReview/ParkReview.jsx";
 import SubscriptionButton from "../Subscription/SubscriptionButton.jsx"; // ← import new button
+import TripButton from "../Trips/Buttons/TripButton.jsx";
 
 export default function ParkDetail({ userId }) {
   const location = useLocation();
@@ -44,38 +45,43 @@ export default function ParkDetail({ userId }) {
       />
 
       <button className={style.parkBtn}>
-        <Link to="/favorites" className={style.linkBtn}>
-          My Favorite Parks
-        </Link>
+        <Link to="/favorites" className={style.linkBtn}>My Favorite Parks</Link>
       </button>
+
+      <TripButton
+          userId={localStorage.getItem("userId")}
+          parkCode={park.parkCode}
+          fullName={park.fullName}
+          description={park.description}
+      />
+        <button className={style.parkBtn}>
+            <Link to="/trips" className={style.linkBtn}>My Trips</Link>
+        </button>
+      <button className={style.parkBtn} onClick={goBack}>Back to Search</button>
 
       <h1>{park.fullName}</h1>
 
       <div className={style.carouselWrapper}>
-        <button className={style.arrow} onClick={scrollLeft}>
-          ◀
-        </button>
-
-        <div className={style.carousel} ref={carouselRef}>
-          {park.images.map((img, index) => (
-            <figure key={index} className={style.carouselItem}>
-              <img
-                src={img.url}
-                alt={img.altText || "Park Image"}
-                title={img.title}
-                onError={(e) => {
-                  e.target.closest("figure").style.display = "none";
-                }}
-              />
-              {img.title && <figcaption>{img.title}</figcaption>}
-            </figure>
-          ))}
-        </div>
-
-        <button className={style.arrow} onClick={scrollRight}>
-          ▶
-        </button>
+      <button className={style.arrow} onClick={scrollLeft}>◀</button>
+      
+      <div className={style.carousel} ref={carouselRef}>
+        {park.images.map((img, index) => (
+          <figure key={index} className={style.carouselItem}>
+            <img
+              src={img.url} 
+              alt={img.altText || "Park Image"} 
+              title={img.title}
+              onError={(e) => {
+              e.target.closest("figure").style.display = "none";
+              }}
+            />
+            {img.title && <figcaption>{img.title}</figcaption>}
+          </figure>
+        ))}
       </div>
+      
+      <button className={style.arrow} onClick={scrollRight}>▶</button>
+    </div>
 
       <p className={style.description}>{park.description}</p>
 
@@ -84,38 +90,36 @@ export default function ParkDetail({ userId }) {
           Visit Official Website
         </a>
       </p>
-
+      
       <h3>Activities:</h3>
-      <p className={style.activities}>
-        {park.activities && park.activities.length > 0
-          ? park.activities.map((a) => a.name).join(", ")
-          : "No activities available"}
+      <p className={style.activities}> 
+        {park.activities && park.activities.length > 0 ? 
+        park.activities.map(a => a.name).join(", ") : 
+          "No activities available"}
       </p>
 
       <p className={style.parkUrl}>
-        <Link
-          to={`/park/hiking/${park.parkCode}`}
+        <Link 
+          to={`/park/hiking/${park.parkCode}`} 
           state={{ parkName: park.fullName }}
         >
           See hiking trails in {park.fullName}
         </Link>
       </p>
-
+      
       {park.addresses?.length > 0 && (
         <div>
           <h3>Address:</h3>
           <p className={style.address}>
-            {park.addresses[0].line1}
-            <br />
-            {park.addresses[0].city}, {park.addresses[0].stateCode}{" "}
-            {park.addresses[0].postalCode}
+            {park.addresses[0].line1}<br />
+            {park.addresses[0].city}, {park.addresses[0].stateCode} {park.addresses[0].postalCode}
           </p>
         </div>
       )}
 
       <button className={style.parkBtn}>
-        <Link
-          to={`/park/campgrounds/${park.parkCode}`}
+        <Link 
+          to={`/park/campgrounds/${park.parkCode}`} 
           className={style.linkBtn}
           state={{ parkName: park.fullName }}
         >
@@ -123,7 +127,8 @@ export default function ParkDetail({ userId }) {
         </Link>
       </button>
 
-      <ParkReview parkCode={park.parkCode} userId={userId} />
+      <ParkReview parkCode={park.parkCode} userId={userId}/>
+      
     </div>
   );
 }

@@ -1,9 +1,12 @@
+/* General styles for the main container */
 .tripDetails {
     padding: 1.25rem 2.188rem;
     text-align: center;
     background-color: rgba(238, 245, 238, 0.75);
+    border-radius: 8px;
 }
 
+/* General Button Styles */
 .tripBtn {
     margin: 0 5px 30px 5px;
     background-color: #004d40;
@@ -16,38 +19,111 @@
     color: white;
 }
 
+.dateBtns {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Space between the buttons */
+    margin-bottom: 20px;
+}
+
 .tripBtn:hover {
     background-color: #017e69;
 }
 
-.linkBtn {
+/* Text Link Button for the Actions (e.g., Hiking Trails, Campgrounds) */
+.tripBtn a {
     color: white;
+    text-decoration: none;
 }
 
-/* Description section */
+.tripBtn a:hover {
+    color: #b2dfdb;
+    text-decoration: underline;
+}
+
+/* Description section for the park/trip details */
 .description {
     margin-top: 20px;
     text-align: justify;
     line-height: 1.5;
+    font-size: 1rem;
 }
 
-/* Styled the details links (e.g., View Trails, Campgrounds) */
-.tripUrl {
+/* For the subheading sections (e.g., Hiking Trails, Campgrounds) */
+.tripDetails h2,
+.tripDetails h3 {
     text-align: left;
+    margin-top: 20px;
+    color: #004d40;
+}
+
+/* For the additional buttons at the bottom */
+.additionalBtns {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between buttons */
+}
+
+/* Error message styling */
+.error {
+    color: red;
+    font-size: 1rem;
+    margin: 20px 0;
+}
+
+/* Button for deleting trips */
+.deleteTripBtn {
+    background-color: #d32f2f;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.3s ease;
+}
+
+.deleteTripBtn:hover {
+    background-color: #9a0007;
+    color: #ffebee;
+}
+
+/* Link styles for the navigations to trails and campgrounds */
+.tripUrl {
     margin: 5px 0 30px 0;
     color: #015f4f;
+    font-size: 0.9rem;
+    font-weight: bold;
 }
 
 .tripUrl a {
     color: #015f4f;
     font-weight: bold;
+    text-decoration: none;
 }
 
 .tripUrl a:hover {
     color: #149f88;
+    text-decoration: underline;
 }
 
-.tripDetails h3 {
-    text-align: left;
-    margin-top: 20px;
+/* Responsive Design: Ensure things are centered on smaller screens */
+@media (max-width: 768px) {
+    .tripDetails {
+        text-align: center;
+    }
+
+    .additionalBtns {
+        flex-direction: column;
+        gap: 10px; /* Smaller gap on smaller screens */
+    }
+
+    .tripBtn {
+        width: 100%;
+    }
+
+    .deleteTripBtn {
+        width: 100%;
+    }
 }

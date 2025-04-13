@@ -32,11 +32,18 @@ function App() {
         setIsAuthenticated(!!token); // Set authentication based on token presence
     }, []);
 
+    useEffect(() => {
+      const token = localStorage.getItem("authToken");
+      if (token && location.pathname === "/") {
+        navigate("/dashboard");
+      }
+    }, [location, navigate]);
+
     // Log the user out when the token becomes invalid
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     setIsAuthenticated(false); // Update auth state
-    navigate("/App");
+    navigate("/");
   };
 
   return (
@@ -61,7 +68,6 @@ function App() {
                 path="/login"
                 element={<Login setIsAuthenticated={setIsAuthenticated} />}
             />
-            <Route path="/App" element={<App/>}/>
 
           {/* Protected Routes */}
           <Route
@@ -144,6 +150,22 @@ function App() {
                     </ProtectedRoute>
                 }
             />
+            <Route
+                path="/trips/:tripId"
+                element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                        <TripDetails />
+                    </ProtectedRoute>
+                }
+            />
+            {/*<Route*/}
+            {/*    path="/parkDetails/:parkCode"*/}
+            {/*    element={*/}
+            {/*        <ProtectedRoute isAuthenticated={isAuthenticated}>*/}
+            {/*            <TripDetails />*/}
+            {/*        </ProtectedRoute>*/}
+            {/*    }*/}
+            {/*/>*/}
             <Route
                 path="/profile"
                 element={

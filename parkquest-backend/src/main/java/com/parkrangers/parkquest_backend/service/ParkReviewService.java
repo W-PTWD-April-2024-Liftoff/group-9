@@ -32,30 +32,37 @@ public class ParkReviewService {
         return parkReviewRepository.save(review);
     }
 
-    //Method to delete a park review
-    public void deleteReview(Long userId, String parkCode) {
-        parkReviewRepository.findByUserIdAndParkCode(userId, parkCode)
-                .ifPresent(parkReviewRepository::delete);
-    }
-
     // Method to edit an existing park review (only the review owner can edit it)
-    public ParkReview editReview (Long userId, String parkCode, String content, int rating) {
-        Optional<ParkReview> existingReview = parkReviewRepository.findByUserIdAndParkCode(userId, parkCode);
+    public ParkReview editReview( Long userId, String parkCode, String content, Long reviewId, int rating) {
+        Optional<ParkReview> existingReview = parkReviewRepository.findById(reviewId);
+
         if (existingReview.isEmpty()) {
             return null;
         }
-        try {
-            ParkReview review = existingReview.get();
-            review.setContent(content);
-            review.setRating(rating);
-            return parkReviewRepository.save(review);
-        } catch (SecurityException e) {
+
+        ParkReview review = existingReview.get();
+
+        // Check if the current user is the one who created the review
+        if (!review.getUserId().equals(userId)) {
             throw new SecurityException("User does not have permission to edit this review");
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Review not found");
         }
 
+        // Update review content and rating
+        review.setContent(content);
+        review.setRating(rating);
+        return parkReviewRepository.save(review);
     }
 
-
+    public boolean deleteReview(Long reviewId, Long userId) {
+        Optional<ParkReview> reviewOptional = parkReviewRepository.findById(reviewId);
+        if (reviewOptional.isPresent()) {
+            ParkReview review = reviewOptional.get();
+            // Check if the user is the owner of the review
+            if (review.getUserId().equals(userId)) {
+                parkReviewRepository.delete(review);
+                return true;
+            }
+        }
+        return false;  // Either review not found or user is not the owner
+    }
 }
