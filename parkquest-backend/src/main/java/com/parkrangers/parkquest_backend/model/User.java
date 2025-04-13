@@ -34,14 +34,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-   private boolean IsAdmin;
-
-    @ManyToMany(fetch = FetchType.EAGER)  // Eager fetch ensures roles are loaded immediately with the user
-    @JoinTable(
-            name = "user_roles", // Intermediate table for user-role relationship
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+//    private boolean IsAdmin;
 
     private Set<Role> roles;
 
@@ -56,8 +49,15 @@ public class User implements UserDetails {
 //    public void setGoogleId(String googleId) {
 //        this.googleId = googleId;
 //    }
+@OneToOne(fetch = FetchType.EAGER)  // Eager fetch ensures roles are loaded immediately with the user
+@JoinTable(
+        name = "roles", // Intermediate table for user-role relationship
+        joinColumns = @JoinColumn(name = "role_id"),
+        inverseJoinColumns = @JoinColumn(name = "id")
+)
 
-    public Long getUserId() {
+
+public Long getUserId() {
         return userId;
     }
 
@@ -81,9 +81,7 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-
-
-    public void setPassword(String password) {
+   public void setPassword(String password) {
         this.password = password;
     }
 
