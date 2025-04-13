@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './ParkReview.module.css';
 import { FaEdit, FaTrashAlt, FaStar } from 'react-icons/fa';
 
-const ParkReview = ({ parkCode, userId, isAdmin }) => {
+const ParkReview = ({ parkCode, userId, isAdmin = true  }) => {
     const [reviews, setReviews] = useState([]);
     const [reviewText, setReviewText] = useState('');
     const [rating, setRating] = useState(0);
@@ -60,14 +60,19 @@ const ParkReview = ({ parkCode, userId, isAdmin }) => {
         if (!userConfirmed) return;
 
         try {
+            // Send the userId and isAdmin as query parameters in the DELETE request
             const response = await fetch(`http://localhost:8081/park-reviews/${reviewId}?userId=${userId}&isAdmin=${isAdmin}`, {
                 method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json', // Optional, but can be kept
+                },
             });
 
             if (!response.ok) {
                 throw new Error('Failed to delete review');
             }
 
+            // Refresh the reviews after the review has been deleted
             fetchReviews();
         } catch (err) {
             setError('Error deleting review');

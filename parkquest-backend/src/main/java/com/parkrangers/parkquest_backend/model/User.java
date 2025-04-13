@@ -34,15 +34,19 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    private boolean IsAdmin;
+
     @ManyToMany(fetch = FetchType.EAGER)  // Eager fetch ensures roles are loaded immediately with the user
     @JoinTable(
             name = "user_roles", // Intermediate table for user-role relationship
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+
     private Set<Role> roles;
 
     public User(Long userId) {
+
     }
 
 //    public String getGoogleId() {
@@ -82,6 +86,8 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    //public void setAdmin(Boolean IsAdmin) {IsAdmin = Boolean.TRUE;}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
