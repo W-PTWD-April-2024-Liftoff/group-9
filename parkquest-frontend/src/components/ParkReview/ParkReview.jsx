@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './ParkReview.module.css';
 import { FaEdit, FaTrashAlt, FaStar } from 'react-icons/fa';
 
-const ParkReview = ({ parkCode, userId, isAdmin = true  }) => {
+const ParkReview = ({ parkCode, userId, isAdmin }) => {
     const [reviews, setReviews] = useState([]);
     const [reviewText, setReviewText] = useState('');
     const [rating, setRating] = useState(0);
@@ -60,11 +60,15 @@ const ParkReview = ({ parkCode, userId, isAdmin = true  }) => {
         if (!userConfirmed) return;
 
         try {
-            // Send the userId and isAdmin as query parameters in the DELETE request
-            const response = await fetch(`http://localhost:8081/park-reviews/${reviewId}?userId=${userId}&isAdmin=${isAdmin}`, {
+            const queryParams = new URLSearchParams({ userId });
+            if (typeof isAdmin === 'boolean') {
+                queryParams.append("isAdmin", isAdmin); // Pass isAdmin flag in query
+            }
+
+            const response = await fetch(`http://localhost:8081/park-reviews/${reviewId}?${queryParams.toString()}`, {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json', // Optional, but can be kept
+                    'Content-Type': 'application/json',
                 },
             });
 
@@ -72,7 +76,6 @@ const ParkReview = ({ parkCode, userId, isAdmin = true  }) => {
                 throw new Error('Failed to delete review');
             }
 
-            // Refresh the reviews after the review has been deleted
             fetchReviews();
         } catch (err) {
             setError('Error deleting review');
@@ -181,3 +184,4 @@ const ParkReview = ({ parkCode, userId, isAdmin = true  }) => {
 };
 
 export default ParkReview;
+

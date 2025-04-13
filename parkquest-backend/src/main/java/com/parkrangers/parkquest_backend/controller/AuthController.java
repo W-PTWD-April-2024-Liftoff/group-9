@@ -26,7 +26,6 @@ public class AuthController {
 
     private static final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String, String> body) {
         try {
@@ -49,28 +48,32 @@ public class AuthController {
                     .signWith(secretKey) // Sign the token with the secret key
                     .compact();
 
-            // Return token and user details as response
+            // Check if user has 'ROLE_ADMIN'
+            boolean isAdmin = user.getRoles().stream()
+                    .anyMatch(role -> role.getName().equalsIgnoreCase("ROLE_ADMIN"));
+
+            // Return token, user info, and isAdmin status
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("userId", user.getUserId());
-            response.put("user", user);
+            response.put("username", user.getUsername());
+            response.put("email", user.getEmail());
+            response.put("isAdmin", isAdmin); // 👈 Added isAdmin flag
 
             return ResponseEntity.ok().body(response); // Send token and user data
+
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(false, e.getMessage()));
         }
     }
 
-
-
-@PostMapping("/signup")
+    @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody Map<String, String> body) {
         try {
             String email = body.get("email");
             String username = body.get("username");
             String password = body.get("password");
             String role = body.getOrDefault("role", "ROLE_USER");
-
 
             if (email == null || username == null || password == null) {
                 throw new IllegalArgumentException("Email, username, and password must be provided.");
@@ -93,18 +96,23 @@ public class AuthController {
         public String getEmail() {
             return email;
         }
+
         public void setEmail(String email) {
             this.email = email;
         }
+
         public String getName() {
             return name;
         }
+
         public void setName(String name) {
             this.name = name;
         }
+
         public String getPassword() {
             return password;
         }
+
         public void setPassword(String password) {
             this.password = password;
         }
@@ -119,18 +127,23 @@ public class AuthController {
         public String getEmail() {
             return email;
         }
+
         public void setEmail(String email) {
             this.email = email;
         }
+
         public String getUsername() {
             return username;
         }
+
         public void setUsername(String username) {
             this.username = username;
         }
+
         public String getPassword() {
             return password;
         }
+
         public void setPassword(String password) {
             this.password = password;
         }

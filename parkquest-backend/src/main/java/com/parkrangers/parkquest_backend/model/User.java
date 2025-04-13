@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-//    @Column(name = "googleId", nullable = true, unique = true)
+//    @Column(name = "googleId", nullable = false, unique = true)
 //    private String googleId;
 
     @Column(name = "username", nullable = true, unique = true)
@@ -34,9 +34,18 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-//    private boolean IsAdmin;
+    @Column(name = "is_admin", nullable = false)
+    private boolean isAdmin = false; //  Default to false
 
-    private Set<Role> roles;
+
+    @ManyToMany(fetch = FetchType.EAGER)  // Eager fetch ensures roles are loaded immediately with the user
+    @JoinTable(
+            name = "user_roles", // Intermediate table for user-role relationship
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+                )
+
+     private Set<Role> roles;
 
     public User(Long userId) {
 
@@ -49,13 +58,6 @@ public class User implements UserDetails {
 //    public void setGoogleId(String googleId) {
 //        this.googleId = googleId;
 //    }
-@OneToOne(fetch = FetchType.EAGER)  // Eager fetch ensures roles are loaded immediately with the user
-@JoinTable(
-        name = "roles", // Intermediate table for user-role relationship
-        joinColumns = @JoinColumn(name = "role_id"),
-        inverseJoinColumns = @JoinColumn(name = "id")
-)
-
 
 public Long getUserId() {
         return userId;

@@ -1,31 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import style from "./Profile.module.css";
+import ParkReview from "../ParkReview/ParkReview"; // Adjusted to correct relative path
+
+
 
 const ProfilePage = () => {
     const [email, setEmail] = useState("");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [error, setError] = useState("");
-    const [isAdmin, setIsAdmin] = useState(false);
     const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
     const userId = localStorage.getItem("userId");
+    const isAdmin = localStorage.getItem("isAdmin") === "true";  // Fetching admin status from localStorage
 
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
         try {
             if (!userId) throw new Error("User ID is missing. Please log in again.");
 
-            // Log the payload being sent
+            // Prepare the payload with isAdmin flag
             const payload = {
                 userId,
                 email,
                 currentPassword,
                 newPassword,
-                isAdmin: isAdmin.toString()
+                isAdmin // Passing isAdmin status
             };
             console.log("Payload being sent to backend:", payload);
 
@@ -86,20 +89,13 @@ const ProfilePage = () => {
                     />
                 </label>
 
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={isAdmin}
-                        onChange={() => setIsAdmin(!isAdmin)}
-                    />
-                    Admin Role
-                </label>
-
-
                 <button type="submit" className={style.submitButton}>
                     Update Profile
                 </button>
             </form>
+
+            {/* Render ParkReview component with admin status */}
+            <ParkReview parkCode="someParkCode" userId={userId} isAdmin={isAdmin} />
         </div>
     );
 };

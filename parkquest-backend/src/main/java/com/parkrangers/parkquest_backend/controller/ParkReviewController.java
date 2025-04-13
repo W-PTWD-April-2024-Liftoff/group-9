@@ -23,15 +23,19 @@ public class ParkReviewController {
 
     // Get all park reviews for a specific park
     @GetMapping("/{parkCode}")
-    public List<ParkReview> getReviewsForPark(@PathVariable String parkCode) {
-        return parkReviewService.getReviewsForPark(parkCode);
+    public ResponseEntity<List<ParkReview>> getReviewsForPark(@PathVariable String parkCode) {
+        List<ParkReview> reviews = parkReviewService.getReviewsForPark(parkCode);
+        if (reviews.isEmpty()) {
+            return ResponseEntity.noContent().build(); // No reviews available
+        }
+        return ResponseEntity.ok(reviews); // Return reviews
     }
 
     // Create a new park review for a specific park
     @PostMapping
     public ResponseEntity<ParkReview> addReview(@RequestBody ParkReviewRequest request) {
         ParkReview review = parkReviewService.createReview(request.getUserId(), request.getParkCode(), request.getContent(), request.getRating());
-        return ResponseEntity.ok(review);
+        return ResponseEntity.ok(review); // Return created review
     }
 
     // Edit an existing park review (only the review owner can edit it)
@@ -39,9 +43,9 @@ public class ParkReviewController {
     public ResponseEntity<ParkReview> editReview(@PathVariable Long reviewId, @RequestBody ParkReviewRequest request) {
         ParkReview updatedReview = parkReviewService.editReview(request.getUserId(), request.getParkCode(), request.getContent(), reviewId, request.getRating());
         if (updatedReview != null) {
-            return ResponseEntity.ok(updatedReview);
+            return ResponseEntity.ok(updatedReview); // Return updated review
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); // Review not found or unauthorized
         }
     }
 
@@ -52,7 +56,7 @@ public class ParkReviewController {
         if (deleted) {
             return ResponseEntity.noContent().build(); // Successfully deleted
         } else {
-            return ResponseEntity.notFound().build(); // Not found or unauthorized
+            return ResponseEntity.status(403).build(); // Forbidden, unauthorized to delete
         }
     }
 }
