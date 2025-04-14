@@ -19,11 +19,7 @@ public class SubscriptionService {
     @Autowired
     private UserRepository userRepository;
 
-    /**
-     * Fetch all subscriptions for a specific user.
-     * @param userId The ID of the user.
-     * @return A list of park codes that the user is subscribed to.
-     */
+
     public List<String> getSubscriptionsForUser(Long userId) {
         return userRepository.findById(userId)
                 .map(user -> subscriptionRepository.findByUser(user).stream()
@@ -32,26 +28,20 @@ public class SubscriptionService {
                 .orElse(null); // Return null if no subscriptions exist for the user
     }
 
-    /**
-     * Create a new subscription for a user to a specific park.
-     * @param userId The ID of the user.
-     * @param parkCode The code of the park.
-     * @return The created subscription or null if the subscription already exists.
-     */
+
     public Subscription createSubscription(Long userId, String parkCode) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
-            System.out.println("❌ User not found with ID: " + userId);
-            return null; // Return null if the user is not found
+            System.out.println(" User not found with ID: " + userId);
+            return null;
         }
-
 
         User user = userOptional.get();
 
         // Check if the user is already subscribed to the park
         Optional<Subscription> existing = subscriptionRepository.findByUserAndParkCode(user, parkCode);
         if (existing.isPresent()) {
-            System.out.println("❌ Subscription already exists for user: " + userId + " to park: " + parkCode);
+            System.out.println("Subscription already exists for user: " + userId + " to park: " + parkCode);
             return null; // Return null if the user is already subscribed to the park
         }
 
@@ -64,12 +54,7 @@ public class SubscriptionService {
         return subscriptionRepository.save(subscription);
     }
 
-    /**
-     * Delete a subscription for a user from a specific park.
-     * @param userId The ID of the user.
-     * @param parkCode The code of the park.
-     * @return true if the subscription was deleted, false otherwise.
-     */
+
     public boolean deleteSubscription(Long userId, String parkCode) {
         return userRepository.findById(userId).map(user -> {
             Optional<Subscription> subscription = subscriptionRepository.findByUserAndParkCode(user, parkCode);
@@ -78,7 +63,7 @@ public class SubscriptionService {
                 subscriptionRepository.delete(subscription.get());
                 return true;
             }
-            return false; // Return false if no subscription exists
-        }).orElse(false); // Return false if the user does not exist
+            return false;
+        }).orElse(false);
     }
 }
