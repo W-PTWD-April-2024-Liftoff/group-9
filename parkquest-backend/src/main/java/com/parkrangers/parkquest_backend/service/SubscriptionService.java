@@ -27,15 +27,6 @@ public class SubscriptionService {
     private EventService eventService;
 
 
-    public List<String> getSubscriptionsForUser(Long userId) {
-        return userRepository.findById(userId)
-                .map(user -> subscriptionRepository.findByUser(user).stream()
-                        .map(Subscription::getParkCode)
-                        .toList())
-                .orElse(null);
-    }
-
-
     public Subscription createSubscription(Long userId, String parkCode) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
@@ -45,19 +36,10 @@ public class SubscriptionService {
 
         User user = userOptional.get();
 
-        // Check if the user is already subscribed to the park
-        Optional<Subscription> existing = subscriptionRepository.findByUserAndParkCode(user, parkCode);
-        if (existing.isPresent()) {
-            System.out.println("Subscription already exists for user: " + userId + " to park: " + parkCode);
-            return null;
-        }
-
-        // Create a new subscription
         Subscription subscription = new Subscription();
         subscription.setUser(user);
         subscription.setParkCode(parkCode);
 
-        // Save the subscription to the database
         subscriptionRepository.save(subscription);
         List<Event> events = eventService.fetchEventsByParkCode(parkCode);
         notificationService.sendSubscriptionEmail(user.getEmail(), parkCode, events);
@@ -68,16 +50,8 @@ public class SubscriptionService {
     }
 
 
-
-    public boolean deleteSubscription(Long userId, String parkCode) {
-        return userRepository.findById(userId).map(user -> {
-            Optional<Subscription> subscription = subscriptionRepository.findByUserAndParkCode(user, parkCode);
-            if (subscription.isPresent()) {
-                // Delete the found subscription
-                subscriptionRepository.delete(subscription.get());
-                return true;
-            }
-            return false;
-        }).orElse(false);
+    public boolean isUserSubscribedToPark(Long userId, String parkCode) {
+        return subscriptionRepository.existsByUserUserIdAndParkCode(userId, parkCode);
     }
+
 }
