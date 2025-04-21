@@ -18,6 +18,7 @@ public class EventService {
 
     public List<Event> fetchEventsByParkCode(String parkCode) {
         String url = "https://developer.nps.gov/api/v1/events?parkCode=" + parkCode + "&api_key=" + apiKey;
+        System.out.println("Calling NPS Events API: " + url);
 
         try {
             NpsEventResponse response = restTemplate.getForObject(url, NpsEventResponse.class);

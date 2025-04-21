@@ -6,7 +6,7 @@ public class ParkReviewRequest {
         private String content;
         private int rating;
 
-        // Getters and setters
+
 
         public Long getUserId() {
             return userId;
