@@ -31,10 +31,10 @@ public class Park {
     @Column(name = "note_to_self")
     private String noteToSelf;
 
-    @Transient // This means images won't be stored in the database
+    @Transient
     private List<Image> images;
 
-    @Transient  // Do NOT persist activities in the database
+    @Transient
     private List<Activity> activities;
 
     @Transient

@@ -30,12 +30,19 @@ public class NotificationService {
                         .append("\n");
             }
         }
+
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
         message.setSubject("You're subscribed to park updates!");
-        message.setText("You've successfully subscribed to updates for park: " + parkCode);
+        message.setText(body.toString());
 
-        mailSender.send(message);
-        System.out.println(" Email sent to " + toEmail + " for park " + parkCode);
+        try {
+            mailSender.send(message);
+            System.out.println("Email sent to " + toEmail + " for park " + parkCode);
+        } catch (Exception e) {
+            System.err.println("Failed to send email to " + toEmail + " for park " + parkCode);
+            e.printStackTrace();
+        }
     }
 }

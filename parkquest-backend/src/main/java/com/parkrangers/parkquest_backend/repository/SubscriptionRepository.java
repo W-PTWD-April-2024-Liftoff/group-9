@@ -9,5 +9,7 @@ import java.util.Optional;
 
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
     List<Subscription> findByUser(User user);
+    boolean existsByUserUserIdAndParkCode(Long userId, String parkCode);
     Optional<Subscription> findByUserAndParkCode(User user, String parkCode);
+
 }
